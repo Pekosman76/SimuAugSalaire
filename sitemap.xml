@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://example.github.io/simulateur-augmentation/index.html</loc>
+    <loc>https://calcul-augmentation-salaire.fr/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://example.github.io/simulateur-augmentation/a-propos.html</loc>
+    <loc>https://calcul-augmentation-salaire.fr/a-propos.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://example.github.io/simulateur-augmentation/mentions-legales.html</loc>
+    <loc>https://calcul-augmentation-salaire.fr/mentions-legales.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://example.github.io/simulateur-augmentation/politique-confidentialite.html</loc>
+    <loc>https://calcul-augmentation-salaire.fr/politique-confidentialite.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://example.github.io/simulateur-augmentation/contact.html</loc>
+    <loc>https://calcul-augmentation-salaire.fr/contact.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
