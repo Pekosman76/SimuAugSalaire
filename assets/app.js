@@ -1,4 +1,4 @@
-/* global config */
+/* global config, Chart, jspdf */
 
 (function initSite() {
   'use strict';
@@ -8,6 +8,9 @@
     currency: 'EUR',
     maximumFractionDigits: 2
   });
+
+  let salaryChart;
+  let evolutionChart;
 
   function formatEuro(value) {
     return euroFormatter.format(value);
@@ -21,12 +24,6 @@
     document.querySelectorAll('[data-domain-name]').forEach((node) => {
       node.textContent = config.domainName;
     });
-  }
-
-  function setupCookieBanner() {
-    const banner = document.getElementById('cookie-banner');
-    const button = document.getElementById('accept-cookies');
-    if (!banner || !button) return;
 
     document.querySelectorAll('[data-contact-email]').forEach((node) => {
       node.textContent = config.contactEmail;
@@ -54,6 +51,172 @@
     });
   }
 
+  function setupThemeToggle() {
+    const toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+
+    const savedTheme = localStorage.getItem('theme');
+    const initialTheme = savedTheme || 'light';
+    document.documentElement.setAttribute('data-theme', initialTheme);
+
+    function refreshLabel() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️ Mode clair' : '🌙 Mode sombre';
+      toggle.setAttribute('aria-pressed', String(isDark));
+    }
+
+    refreshLabel();
+
+    toggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      refreshLabel();
+    });
+  }
+
+  function renderCharts({ brutIncreaseMonthly, gainNetMonthly, taxRatePct }) {
+    if (typeof Chart === 'undefined') return;
+
+    const barCtx = document.getElementById('salary-chart');
+    const lineCtx = document.getElementById('evolution-chart');
+    if (!barCtx || !lineCtx) return;
+
+    if (salaryChart) salaryChart.destroy();
+    if (evolutionChart) evolutionChart.destroy();
+
+    salaryChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Augmentation brute', 'Gain net estimé'],
+        datasets: [{
+          label: 'Montant mensuel (€)',
+          data: [brutIncreaseMonthly, gainNetMonthly],
+          backgroundColor: ['#6366f1', '#14b8a6'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label(context) {
+                return `${context.dataset.label}: ${formatEuro(context.raw)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback(value) {
+                return formatEuro(value);
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const months = Array.from({ length: 12 }, (_, index) => `M${index + 1}`);
+    const cumulativeNet = months.map((_, index) => gainNetMonthly * (index + 1));
+    const cumulativeBrut = months.map((_, index) => brutIncreaseMonthly * (index + 1));
+
+    evolutionChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          {
+            label: 'Cumul brut',
+            data: cumulativeBrut,
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+            tension: 0.35,
+            fill: true
+          },
+          {
+            label: `Cumul net (${taxRatePct.toFixed(1)} % PAS)`,
+            data: cumulativeNet,
+            borderColor: '#14b8a6',
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            tension: 0.35,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label(context) {
+                return `${context.dataset.label}: ${formatEuro(context.raw)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback(value) {
+                return formatEuro(value);
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function buildNegotiationAdvice({ percentIncrease, brutIncreaseMonthly, targetNetGain }) {
+    return `Bonjour [Prénom Manager],\n\nJe souhaite discuter d’une revalorisation salariale alignée avec mes résultats récents et l’élargissement de mon périmètre.\n\nD’après ma simulation, pour atteindre +${formatEuro(targetNetGain)} net par mois, ma demande correspond à environ +${formatEuro(brutIncreaseMonthly)} brut mensuel, soit +${percentIncrease.toFixed(2)} %.\n\nJe vous propose d’échanger sur la meilleure modalité (augmentation immédiate ou plan en 2 étapes) afin de rester cohérent avec les objectifs de l’équipe.\n\nMerci pour votre retour,\n[Signature]`;
+  }
+
+  async function exportResultsToPdf() {
+    const { jsPDF } = jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    const title = document.querySelector('.results-title')?.textContent || 'Résultats simulateur';
+    const summary = document.getElementById('ready-text')?.textContent || '';
+    const advice = document.getElementById('negotiation-advice')?.textContent || '';
+
+    doc.setFontSize(16);
+    doc.text('Simulateur d’augmentation salariale', 14, 18);
+    doc.setFontSize(11);
+    doc.text(title, 14, 28);
+
+    const summaryLines = doc.splitTextToSize(`Résumé : ${summary}`, 180);
+    doc.text(summaryLines, 14, 38);
+
+    const barCanvas = document.getElementById('salary-chart');
+    const lineCanvas = document.getElementById('evolution-chart');
+
+    if (barCanvas) {
+      const imgBar = barCanvas.toDataURL('image/png', 1.0);
+      doc.text('Graphique 1 : Brut vs Net', 14, 75);
+      doc.addImage(imgBar, 'PNG', 14, 78, 85, 52);
+    }
+
+    if (lineCanvas) {
+      const imgLine = lineCanvas.toDataURL('image/png', 1.0);
+      doc.text('Graphique 2 : Projection 12 mois', 110, 75);
+      doc.addImage(imgLine, 'PNG', 110, 78, 85, 52);
+    }
+
+    doc.text('Conseils de négociation / mail type', 14, 140);
+    const adviceLines = doc.splitTextToSize(advice, 180);
+    doc.text(adviceLines, 14, 147);
+
+    doc.save('simulation-augmentation-salaire.pdf');
+  }
+
   function setupSimulator() {
     const form = document.getElementById('simulator-form');
     if (!form) return;
@@ -69,6 +232,8 @@
     const results = document.getElementById('results');
     const errorNode = document.getElementById('form-error');
     const copyButton = document.getElementById('copy-result');
+    const adviceNode = document.getElementById('negotiation-advice');
+    const exportButton = document.getElementById('export-pdf');
 
     function selectedMode() {
       const selected = Array.from(salaryModeInputs).find((input) => input.checked);
@@ -173,8 +338,14 @@
 
       const summary = `Pour gagner +${Math.round(targetNetGain)} € net par mois (après prélèvement à la source), je dois demander environ +${Math.round(brutIncreaseMonthly)} € brut par mois, soit +${percentIncrease.toFixed(2)} % d’augmentation (sur un brut actuel de ${salaryContext}).`;
 
+      const negotiationAdvice = buildNegotiationAdvice({ percentIncrease, brutIncreaseMonthly, targetNetGain });
+
       document.getElementById('ready-text').textContent = summary;
-      copyButton.dataset.copyText = summary;
+      adviceNode.textContent = negotiationAdvice;
+      copyButton.dataset.copyText = `${summary}\n\n${negotiationAdvice}`;
+
+      renderCharts({ brutIncreaseMonthly, gainNetMonthly, taxRatePct });
+
       results.hidden = false;
       results.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
@@ -193,11 +364,23 @@
         showError('Copie automatique impossible. Copiez le texte manuellement.');
       }
     });
+
+    if (exportButton) {
+      exportButton.addEventListener('click', () => {
+        if (typeof jspdf === 'undefined') {
+          showError('Le module PDF n’est pas chargé.');
+          return;
+        }
+
+        exportResultsToPdf();
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     injectSharedContent();
     setupCookieBanner();
+    setupThemeToggle();
     setupSimulator();
   });
 })();

@@ -271,6 +271,126 @@ button[type="submit"]:hover, .copy-btn:hover, #accept-cookies:hover {
   box-shadow: 0 8px 22px rgba(16, 24, 66, 0.25);
 }
 
+.theme-toggle {
+  border: 1px solid #cfd8ff;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #24306f;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+.theme-toggle:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #93a5ff;
+  outline-offset: 2px;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.chart-card {
+  border: 1px solid #d8e0ff;
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: #ffffff;
+}
+
+.chart-card h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 260px !important;
+}
+
+.negotiation-block {
+  border: 1px solid #d6e1ff;
+  background: #f8faff;
+  border-radius: 14px;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.negotiation-block h4 {
+  margin: 0 0 0.4rem;
+}
+
+[data-theme="dark"] {
+  --bg: #0b1020;
+  --bg-2: #131a33;
+  --card: #111a2e;
+  --text: #e8ecff;
+  --muted: #b5c0dd;
+  --border: #273352;
+  --shadow-soft: 0 18px 40px rgba(2, 6, 23, 0.45);
+}
+
+[data-theme="dark"] body {
+  background: radial-gradient(900px 460px at 15% -10%, #1e2b50, transparent), linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+
+[data-theme="dark"] .site-header {
+  background: rgba(16, 26, 46, 0.88);
+  border-bottom-color: #2a3961;
+}
+
+[data-theme="dark"] .brand,
+[data-theme="dark"] .top-links a,
+[data-theme="dark"] .toc a,
+[data-theme="dark"] .site-footer a {
+  color: #d7e0ff;
+}
+
+[data-theme="dark"] .warning-box,
+[data-theme="dark"] .result-panel,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .negotiation-block,
+[data-theme="dark"] .ready-text,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] .segmented,
+[data-theme="dark"] .cookie-banner,
+[data-theme="dark"] .faq-item {
+  background: #16223d;
+  border-color: #2b3b62;
+  color: #e8ecff;
+}
+
+[data-theme="dark"] .theme-toggle,
+[data-theme="dark"] .tax-chip {
+  background: #1b2947;
+  color: #d8e2ff;
+  border-color: #33466f;
+}
+
+@media (max-width: 900px) {
+  .nav-wrap {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 760px) {
+  .viz-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-toggle {
+    order: 3;
+    width: 100%;
+  }
+}
 @media (max-width: 760px) {
   .top-links { display: none; }
   .card { padding: 1rem; }
