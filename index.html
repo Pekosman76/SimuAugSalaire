@@ -1,263 +1,443 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculer l’augmentation à demander pour gagner +X€ net par mois</title>
-    <meta name="description" content="Simulateur gratuit pour convertir un objectif de gain net mensuel en augmentation brute. Calculez le pourcentage, le nouveau brut et le coût employeur.">
-    
-    <!-- OpenGraph -->
-    <meta property="og:title" content="Combien demander d'augmentation pour +X€ net ?">
-    <meta property="og:description" content="Outil de simulation précis pour vos négociations salariales.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://example.github.io/simulateur-augmentation/">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Simulateur d'Augmentation Salaire">
-    
-    <link rel="canonical" href="https://example.github.io/simulateur-augmentation/">
-    <link rel="stylesheet" href="assets/styles.css">
-    
-    <!-- AdSense: coller ici le script -->
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Pourquoi le net après impôt est-il différent du net à payer ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Le net à payer est le montant versé par l'employeur avant impôt sur le revenu. Le net après impôt déduit le prélèvement à la source."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Quel est le taux de charges sociales moyen en France ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Pour un salarié, les charges sont d'environ 22% à 25% du brut. Pour l'employeur, elles s'élèvent souvent à 42% du brut."
-          }
-        }
-      ]
-    }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Combien demander d’augmentation pour gagner +X € net/mois ? Simulateur gratuit</title>
+  <meta name="description" content="Simulateur gratuit pour convertir un objectif de gain net mensuel en augmentation brute et en pourcentage. Guide ultra pratique, méthodes, exemples, FAQ et conseils de négociation.">
+  <link rel="canonical" href="https://example.github.io/simulateur-augmentation/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Combien demander d’augmentation pour gagner +X € net/mois ?">
+  <meta property="og:description" content="Calculez rapidement le brut à demander, le pourcentage d’augmentation et copiez un résumé clair prêt à partager.">
+  <meta property="og:url" content="https://example.github.io/simulateur-augmentation/index.html">
+  <meta property="og:site_name" content="Simulateur augmentation salaire">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Simulateur augmentation salaire : +X € net/mois">
+  <meta name="twitter:description" content="Un outil simple pour préparer une négociation salariale avec méthode.">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <!-- AdSense: coller ici le script -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Simulateur augmentation salaire","url":"https://example.github.io/simulateur-augmentation/","inLanguage":"fr"}</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Comment convertir un objectif net en brut ?","acceptedAnswer":{"@type":"Answer","text":"Le simulateur applique une formule simplifiée : brut_increase = target_net_gain / (net_rate * (1 - tax_rate))."}},
+      {"@type":"Question","name":"Le prélèvement à la source est-il obligatoire dans le calcul ?","acceptedAnswer":{"@type":"Answer","text":"Non, il est optionnel et réglé à 0 % par défaut. Vous pouvez saisir 0, 5, 10, 15 ou votre taux réel."}},
+      {"@type":"Question","name":"Puis-je saisir mon salaire annuel ?","acceptedAnswer":{"@type":"Answer","text":"Oui, vous pouvez choisir mensuel ou annuel. Le calcul convertit ensuite automatiquement en base mensuelle."}},
+      {"@type":"Question","name":"Les résultats ont-ils une valeur légale ?","acceptedAnswer":{"@type":"Answer","text":"Non, le simulateur est strictement indicatif et ne remplace pas une validation paie ou fiscale officielle."}},
+      {"@type":"Question","name":"Le site stocke-t-il mes données ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les calculs sont locaux dans votre navigateur. Uniquement un consentement cookies minimal est enregistré en local."}}
+    ]
+  }
+  </script>
 </head>
 <body>
-
-<header>
-    <div class="container">
-        <a href="index.html" class="nav-brand">SimuAugment</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="./index.html">Simulateur augmentation salaire</a>
+      <nav class="top-links" aria-label="Navigation principale">
+        <a href="./a-propos.html">À propos</a>
+        <a href="./mentions-legales.html">Mentions légales</a>
+        <a href="./politique-confidentialite.html">Politique de confidentialité</a>
+        <a href="./contact.html">Contact</a>
+      </nav>
     </div>
-</header>
+  </header>
 
-<main class="container">
+  <main class="container">
     <section class="hero">
-        <h1>Calculer l’augmentation à demander pour gagner +X€ net par mois</h1>
-        <p>Convertissez un objectif net mensuel en pourcentage d’augmentation brute et estimez le coût pour votre entreprise.</p>
+      <div class="hero-badges">
+        <span class="badge">Rapide</span>
+        <span class="badge">Clair</span>
+        <span class="badge">Utile</span>
+      </div>
+      <h1>Combien demander d’augmentation pour gagner +X € net par mois ?</h1>
+      <p>Définissez votre objectif net mensuel, appliquez votre profil, ajoutez votre prélèvement à la source et obtenez immédiatement un niveau de demande lisible pour préparer votre entretien.</p>
     </section>
 
-    <div class="warning">
-        <strong>Avertissement :</strong> Cet outil est purement indicatif. Les calculs sont des approximations basées sur des taux moyens et ne remplacent pas une fiche de paie réelle, l'avis d'un expert-comptable ou de l'administration fiscale.
-    </div>
+    <p class="warning-box">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l9 16H3L12 3z" stroke="#9A6700" stroke-width="1.8"/><path d="M12 9v5" stroke="#9A6700" stroke-width="1.8"/><circle cx="12" cy="17" r="1" fill="#9A6700"/></svg>
+      <span><strong>Outil indicatif :</strong> cette simulation donne un ordre de grandeur pour structurer une discussion salariale. Elle ne remplace pas une validation paie, RH, fiscale ou juridique.</span>
+    </p>
 
-    <div class="grid">
-        <!-- Formulaire -->
-        <section class="card">
-            <form id="simulator-form">
-                <div class="form-group">
-                    <label for="brut-actuel">Salaire brut mensuel actuel (€)</label>
-                    <input type="number" id="brut-actuel" placeholder="Ex: 2500" required step="0.01">
-                </div>
+    <section class="card simulator-card" id="simulateur">
+      <h2>Simulateur</h2>
+      <form id="simulator-form" novalidate>
+        <fieldset class="fieldset-toggle">
+          <legend>Votre salaire brut actuel est exprimé en :</legend>
+          <div class="segmented">
+            <label><input type="radio" name="salary-mode" value="monthly" checked><span>Mensuel</span></label>
+            <label><input type="radio" name="salary-mode" value="yearly"><span>Annuel</span></label>
+          </div>
+        </fieldset>
 
-                <div class="form-group">
-                    <label for="profil">Votre profil</label>
-                    <select id="profil">
-                        <option value="non-cadre">Non-cadre (net ≈ 78%)</option>
-                        <option value="cadre">Cadre (net ≈ 75%)</option>
-                        <option value="custom">Personnalisé</option>
-                    </select>
-                </div>
+        <label for="salary-value">Salaire brut actuel (€) <span class="input-hint" id="salary-label-hint">Ex : 2500</span></label>
+        <input id="salary-value" type="number" min="0.01" step="0.01" required placeholder="Ex : 2500">
 
-                <div id="custom-rate-group" class="form-group hidden">
-                    <label for="custom-net-rate">Taux net estimé (ex: 0.78)</label>
-                    <input type="number" id="custom-net-rate" placeholder="0.78" step="0.01" min="0.6" max="0.9">
-                </div>
+        <label for="profil">Profil</label>
+        <select id="profil">
+          <option value="non-cadre">Non-cadre (taux net estimé 0,78)</option>
+          <option value="cadre">Cadre (taux net estimé 0,75)</option>
+          <option value="custom">Personnalisé</option>
+        </select>
 
-                <div class="form-group">
-                    <label for="target-net">Augmentation souhaitée en net mensuel (+€)</label>
-                    <input type="number" id="target-net" placeholder="Ex: 100" required step="0.01">
-                </div>
+        <div id="custom-rate-group" hidden>
+          <label for="custom-net-rate">Taux net personnalisé (0,60 à 0,90)</label>
+          <input id="custom-net-rate" type="number" min="0.60" max="0.90" step="0.01" placeholder="Ex : 0.77">
+        </div>
 
-                <div class="form-group">
-                    <label for="tax-rate">Taux d’imposition à la source (%)</label>
-                    <input type="number" id="tax-rate" placeholder="0" step="0.1" min="0" max="50">
-                </div>
+        <label for="target-net">Objectif : +X € net / mois</label>
+        <input id="target-net" type="number" min="0.01" step="0.01" required placeholder="Ex : 150">
 
-                <details class="form-group">
-                    <summary style="cursor: pointer; margin-bottom: 0.5rem; font-weight: 600;">Options avancées (Coût employeur)</summary>
-                    <div style="padding-top: 0.5rem;">
-                        <label for="employer-rate">Taux charges patronales (%)</label>
-                        <input type="number" id="employer-rate" value="42" step="0.1">
-                    </div>
-                </details>
+        <label for="tax-rate">Prélèvement à la source (%) <span class="input-hint">optionnel, 0 par défaut</span></label>
+        <input id="tax-rate" type="number" min="0" max="45" step="0.1" value="0">
+        <p class="tax-help">Indiqué sur votre fiche de paie ou sur impots.gouv.fr</p>
 
-                <button type="submit" class="btn">Calculer l'augmentation</button>
-            </form>
-        </section>
+        <div class="tax-chips" role="group" aria-label="Raccourcis prélèvement à la source">
+          <button class="tax-chip" type="button" data-tax-chip="0">0%</button>
+          <button class="tax-chip" type="button" data-tax-chip="5">5%</button>
+          <button class="tax-chip" type="button" data-tax-chip="10">10%</button>
+          <button class="tax-chip" type="button" data-tax-chip="15">15%</button>
+        </div>
 
-        <!-- Résultats -->
-        <section id="results" class="card results">
-            <h3>Résultats de la simulation</h3>
-            <div class="result-item">
-                <span class="result-label">Augmentation brute à demander :</span>
-                <span id="res-percent" class="result-value">--</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Nouveau brut mensuel :</span>
-                <span id="res-brut-mensuel" class="result-value">--</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Gain net mensuel (après impôt) :</span>
-                <span id="res-net-mensuel" class="result-value">--</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Gain net annuel :</span>
-                <span id="res-net-annuel" class="result-value">--</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Surcoût employeur mensuel :</span>
-                <span id="res-employeur-mensuel" class="result-value">--</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Surcoût employeur annuel :</span>
-                <span id="res-employeur-annuel" class="result-value">--</span>
-            </div>
+        <button type="submit">Calculer</button>
+        <p id="form-error" class="error" hidden></p>
+      </form>
 
-            <div class="negotiation-box">
-                <h4>Comment négocier ?</h4>
-                <p class="negotiation-text" id="nego-text">Calculez d'abord pour voir le texte...</p>
-                <button class="btn btn-secondary" onclick="copyResult()">Copier le résumé</button>
-            </div>
-        </section>
-    </div>
+      <section id="results" class="results card" hidden>
+        <h3 class="results-title">🎯 Pour gagner <span id="res-target-net">—</span> net / mois</h3>
+        <p class="result-big">🔥 + <span id="res-percent">—</span> d’augmentation</p>
 
-    <!-- Contenu SEO -->
-    <section class="content-section">
-        <h2>Pourquoi est-il crucial de bien calculer son augmentation ?</h2>
-        <p>Demander une augmentation est un moment charnière dans une carrière. Cependant, beaucoup de salariés font l'erreur de parler uniquement en "net". Si votre patron accepte de vous donner "100 euros de plus", il parle souvent en brut, ce qui signifie que vous ne verrez peut-être que 75 euros sur votre compte. Pire, avec le prélèvement à la source, ce montant peut encore diminuer.</p>
-        
-        <h3>Parler en % plutôt qu'en euros net</h3>
-        <p>Dans le monde de l'entreprise, les budgets sont gérés en brut annuel. Arriver avec un pourcentage précis (par exemple : "Je souhaite une augmentation de 6,5%") montre que vous comprenez les enjeux financiers de l'entreprise. Cela facilite aussi le travail des ressources humaines qui n'ont pas à faire les conversions eux-mêmes.</p>
+        <div class="result-panel ask">
+          <h4>👉 Ce que vous devez demander</h4>
+          <p><strong>+ <span id="res-brut-monthly">—</span></strong> brut / mois</p>
+          <p><strong>+ <span id="res-brut-yearly">—</span></strong> brut / an</p>
+        </div>
 
-        <h2>Comprendre la différence : Brut, Net, Net après impôts</h2>
-        <p>En France, le système de paie est complexe. Voici les trois niveaux à distinguer :</p>
+        <div class="result-divider" aria-hidden="true"></div>
+
+        <div class="result-panel gain">
+          <h4>💰 Ce que vous gagnez réellement</h4>
+          <p>+ <span id="res-net-monthly">—</span> net / mois</p>
+          <p>+ <span id="res-net-yearly">—</span> net / an</p>
+        </div>
+
+        <p class="ready-text" id="ready-text">Votre résumé sera affiché ici après calcul.</p>
+        <button id="copy-result" class="copy-btn" type="button">Copier le résumé</button>
+      </section>
+    </section>
+
+    <nav class="card toc" aria-label="Sommaire">
+      <h2 class="toc-title">Sommaire</h2>
+      <ul>
+        <li><a href="#pourquoi-pourcentage">Pourquoi raisonner en pourcentage</a></li>
+        <li><a href="#brut-net">Brut, net et prélèvement à la source</a></li>
+        <li><a href="#mensuel-annuel">Mensuel ou annuel : bien convertir</a></li>
+        <li><a href="#methode">Méthode simple de conversion +X net → %</a></li>
+        <li><a href="#cas-pratiques">Cas pratiques</a></li>
+        <li><a href="#guide-ultra">Guide ultra pratique pour réussir son augmentation</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+      </ul>
+    </nav>
+
+    <article class="editorial">
+      <section id="pourquoi-pourcentage">
+        <h2>Pourquoi raisonner en pourcentage plutôt qu’en euros</h2>
+        <p>Le montant en euros est intuitif, mais la décision interne d’augmentation se fait souvent en pourcentage. C’est la métrique la plus lisible pour un manager, un RH, ou une direction financière. Le pourcentage permet de comparer des situations différentes avec une base commune : coût relatif, cohérence interne, équité, historique d’augmentation, et capacité budgétaire.</p>
+        <div class="callout"><strong>💡 À retenir :</strong> un montant absolu vous aide à définir votre besoin personnel ; un pourcentage vous aide à négocier dans le langage des décideurs.</div>
+        <p>Exemple simple : +200 € brut mensuel peut représenter +10 % pour un salaire à 2 000 €, mais +5 % pour un salaire à 4 000 €. La perception est totalement différente. Le chiffre en euros ne raconte pas la même histoire selon la base de départ. C’est l’une des raisons majeures pour lesquelles une conversion structurée est indispensable.</p>
+        <h3>Pourquoi raisonner en % ?</h3>
         <ul>
-            <li><strong>Le Salaire Brut :</strong> C'est le montant avant toute déduction. C'est la base de calcul pour vos cotisations retraite, chômage et santé.</li>
-            <li><strong>Le Salaire Net :</strong> C'est ce qui reste après les cotisations sociales (environ 22% pour un non-cadre, 25% pour un cadre).</li>
-            <li><strong>Le Net après Impôts :</strong> Depuis 2019, l'impôt est prélevé directement sur votre fiche de paie. C'est ce qui arrive réellement sur votre compte bancaire.</li>
+          <li>Alignement avec les pratiques RH et les arbitrages budgétaires.</li>
+          <li>Comparaison marché plus simple entre postes similaires.</li>
+          <li>Argumentation plus structurée et moins émotionnelle.</li>
+          <li>Capacité à proposer des scénarios (cible, plancher, compromis).</li>
+        </ul>
+        <p>Raisonner en pourcentage vous permet aussi de préparer des alternatives : cible haute, cible réaliste, seuil minimal acceptable, et scénario de repli. Cela renforce votre crédibilité et facilite un échange professionnel.</p>
+      </section>
+
+      <section id="brut-net">
+        <h2>Brut, net et prélèvement à la source : ce qu’il faut vraiment comprendre</h2>
+        <p>Le brut est le montant de référence contractuelle. Le net avant impôt correspond au brut diminué des cotisations salariales. Le net après impôt, lui, tient compte du prélèvement à la source. Dans la vie réelle, c’est généralement ce dernier montant qui compte car c’est celui qui arrive effectivement sur votre compte bancaire.</p>
+        <p>Le simulateur part d’un objectif concret : « je veux +X € net par mois ». Il applique ensuite une conversion cohérente et transparente pour estimer le brut à demander. Cela permet de passer d’une intention personnelle à une proposition compréhensible dans un entretien.</p>
+        <div class="callout warn"><strong>⚠ Attention :</strong> un même objectif net peut nécessiter des montants bruts différents selon votre taux net estimé et votre prélèvement à la source.</div>
+        <p>Si vous ne connaissez pas précisément votre taux de prélèvement à la source, utilisez les raccourcis (0, 5, 10, 15) pour obtenir une fourchette. C’est une approche pragmatique pour préparer une discussion sans prétendre reproduire l’intégralité de votre fiscalité personnelle.</p>
+      </section>
+
+      <section id="mensuel-annuel">
+        <h2>Mensuel vs annuel : comment convertir correctement</h2>
+        <p>Beaucoup de salariés connaissent surtout leur package annuel, tandis que la négociation opérationnelle se déroule souvent en mensuel. Ce site accepte les deux pour éviter les erreurs de conversion.</p>
+        <p>Règle clé : mensuel = annuel / 12 ; annuel = mensuel × 12.</p>
+        <p>Si vous saisissez 42 000 € annuel, le calcul se fait sur une base mensuelle de 3 500 €. Ensuite le résultat est restitué dans les deux unités pour faciliter votre préparation.</p>
+        <div class="callout tip"><strong>🧠 Astuce négociation :</strong> pendant l’entretien, annoncez d’abord le pourcentage, puis précisez la traduction mensuelle et annuelle. Vous paraissez immédiatement plus structuré.</div>
+      </section>
+
+      <section id="methode">
+        <h2>Méthode simple pour convertir “+100 € net” en “% à demander”</h2>
+        <p>Formules utilisées :</p>
+        <ul>
+          <li>net_avant_impot = brut × net_rate</li>
+          <li>net_apres_impot = net_avant_impot × (1 - tax_rate)</li>
+          <li>brut_increase = target_net_gain / (net_rate × (1 - tax_rate))</li>
+          <li>percent_increase = brut_increase / brutMensuel × 100</li>
         </ul>
 
-        <h2>Ce que voit votre employeur : Le coût total</h2>
-        <p>Quand vous demandez 100€ de plus, l'employeur ne paie pas seulement ces 100€. Il doit aussi payer des charges patronales (souvent autour de 42%). Ainsi, une augmentation de 100€ brut coûte en réalité environ 142€ à l'entreprise. Notre simulateur intègre cette donnée pour vous aider à préparer vos arguments.</p>
-
-        <h2>Exemples chiffrés d'augmentations</h2>
-        <div class="example-grid">
-            <div class="example-card">
-                <strong>Objectif : +100€ net</strong><br>
-                Salaire actuel : 2000€ brut<br>
-                Profil : Non-cadre<br>
-                Augmentation brute : +128€ (6.4%)
-            </div>
-            <div class="example-card">
-                <strong>Objectif : +200€ net</strong><br>
-                Salaire actuel : 3000€ brut<br>
-                Profil : Cadre<br>
-                Augmentation brute : +266€ (8.9%)
-            </div>
-            <div class="example-card">
-                <strong>Objectif : +50€ net</strong><br>
-                Salaire actuel : 1800€ brut<br>
-                Profil : Non-cadre<br>
-                Augmentation brute : +64€ (3.5%)
-            </div>
-            <div class="example-card">
-                <strong>Objectif : +300€ net</strong><br>
-                Salaire actuel : 4000€ brut<br>
-                Profil : Cadre (Impôt 10%)<br>
-                Augmentation brute : +444€ (11.1%)
-            </div>
-            <div class="example-card">
-                <strong>Objectif : +150€ net</strong><br>
-                Salaire actuel : 2500€ brut<br>
-                Profil : Non-cadre<br>
-                Augmentation brute : +192€ (7.7%)
-            </div>
-            <div class="example-card">
-                <strong>Objectif : +500€ net</strong><br>
-                Salaire actuel : 5000€ brut<br>
-                Profil : Cadre (Impôt 15%)<br>
-                Augmentation brute : +784€ (15.7%)
-            </div>
+        <div class="schema-steps">
+          <p>Vous voulez : <strong>+100 € net</strong></p>
+          <p>↓</p>
+          <p>Après impôt : il reste moins</p>
+          <p>↓</p>
+          <p>Donc il faut demander plus en brut</p>
         </div>
 
-        <h2>Conseils pour une négociation réussie</h2>
-        <p>1. <strong>Préparez vos preuves :</strong> Listez vos accomplissements de l'année écoulée. Les chiffres parlent plus que les mots.</p>
-        <p>2. <strong>Choisissez le bon moment :</strong> L'entretien annuel est le moment classique, mais une fin de projet réussi est aussi une excellente opportunité.</p>
-        <p>3. <strong>Soyez ferme mais flexible :</strong> Si l'augmentation de salaire pur est bloquée, pensez aux avantages (télétravail, formation, primes, tickets restaurant).</p>
+        <p>Exemple : non-cadre, prélèvement à la source à 10 %, objectif +100 € net/mois. On calcule : 100 / (0,78 × 0,90) = 142,45 € brut/mois. Avec un brut actuel de 2 500 €, cela représente environ +5,70 %.</p>
+      </section>
 
-        <h2>FAQ - Questions Fréquentes</h2>
-        <div class="faq-item">
-            <p class="faq-question">Quelle est la différence entre cadre et non-cadre pour le calcul ?</p>
-            <p>Les cadres cotisent davantage pour certains organismes (notamment la prévoyance et la retraite complémentaire), ce qui réduit leur salaire net par rapport au brut (environ 75% contre 78% pour les non-cadres).</p>
-        </div>
-        <div class="faq-item">
-            <p class="faq-question">Comment l'impôt à la source impacte-t-il mon augmentation ?</p>
-            <p>Si vous changez de tranche d'imposition à cause de votre augmentation, votre taux de prélèvement à la source pourrait augmenter, réduisant ainsi le gain "réel" perçu sur votre compte.</p>
-        </div>
-        <div class="faq-item">
-            <p class="faq-question">Le simulateur prend-il en compte les primes ?</p>
-            <p>Non, ce simulateur se concentre sur le salaire fixe mensuel. Les primes ont souvent des régimes de taxation différents.</p>
-        </div>
-        <div class="faq-item">
-            <p class="faq-question">Est-il préférable de demander une prime ou une augmentation ?</p>
-            <p>L'augmentation est pérenne et compte pour votre retraite et vos futures indemnités chômage. La prime est ponctuelle et ne garantit rien pour l'avenir.</p>
-        </div>
-        <div class="faq-item">
-            <p class="faq-question">Que faire si mon employeur refuse ?</p>
-            <p>Demandez quels sont les objectifs à atteindre pour obtenir cette augmentation dans 6 mois. Fixez une date pour un nouveau point.</p>
+      <section id="cas-pratiques">
+        <h2>Cas pratiques chiffrés</h2>
+        <table>
+          <thead>
+            <tr><th>Brut actuel</th><th>Profil</th><th>Prélèvement à la source</th><th>Objectif net</th><th>Brut à demander</th><th>%</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1 900 €</td><td>Non-cadre</td><td>0 %</td><td>+100 €</td><td>+128,21 €</td><td>+6,75 %</td></tr>
+            <tr><td>2 500 €</td><td>Non-cadre</td><td>10 %</td><td>+150 €</td><td>+213,68 €</td><td>+8,55 %</td></tr>
+            <tr><td>3 000 €</td><td>Cadre</td><td>15 %</td><td>+200 €</td><td>+313,73 €</td><td>+10,46 %</td></tr>
+            <tr><td>3 500 €</td><td>Cadre</td><td>10 %</td><td>+250 €</td><td>+370,37 €</td><td>+10,58 %</td></tr>
+            <tr><td>4 500 €</td><td>Cadre</td><td>5 %</td><td>+300 €</td><td>+421,05 €</td><td>+9,36 %</td></tr>
+            <tr><td>5 200 €</td><td>Non-cadre</td><td>10 %</td><td>+350 €</td><td>+498,58 €</td><td>+9,59 %</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="guide-ultra">
+        <h2>Guide ultra pratique pour réussir son augmentation</h2>
+
+        <h3>Version express (3 minutes à lire)</h3>
+        <p>Si vous devez aller vite, retenez ce plan : (1) définissez votre objectif net mensuel, (2) convertissez-le en brut et en %, (3) préparez trois preuves de valeur, (4) demandez une réunion dédiée et annoncez clairement votre objectif, (5) restez ouvert à un plan en étapes si la réponse immédiate est partielle.</p>
+        <p>En pratique, beaucoup de négociations échouent non pas parce que la demande est illégitime, mais parce que le message est flou. Les phrases du type « j’aimerais être mieux payé » sont compréhensibles humainement, mais difficiles à arbitrer côté entreprise. À l’inverse, une demande structurée (objectif, argument, preuve, proposition) est plus facile à défendre en interne.</p>
+        <p>Votre phrase d’ouverture peut être simple : « J’aimerais échanger sur l’évolution de ma rémunération. Au regard de mes résultats sur les 12 derniers mois, je souhaite viser +X % (soit environ +Y € brut/mois), ce qui correspond à mon objectif de +Z € net/mois après prélèvement à la source. » Cette formulation est sobre, claire et professionnelle.</p>
+
+        <h3>Psychologie de la négociation : ce qui se passe vraiment dans l’entretien</h3>
+        <p>Une négociation salariale n’est pas une équation purement mathématique. C’est un échange humain où interviennent la perception, la confiance, le contexte d’équipe, le timing budgétaire, et la qualité du dialogue. Votre objectif n’est pas d’“avoir raison”, mais de rendre votre demande intelligible, défendable et cohérente avec les contraintes de l’organisation.</p>
+        <p>Le premier biais fréquent est le biais d’intention : vous supposez que l’autre comprend naturellement votre niveau d’engagement. En réalité, votre manager ne voit pas toujours l’ensemble de vos contributions. Il faut donc expliciter vos apports : livrables, qualité, impact, autonomie, coordination, résolution de problèmes, amélioration continue.</p>
+        <p>Le deuxième biais est le biais d’urgence personnelle : vos besoins sont légitimes, mais l’entreprise arbitre à partir d’un cadre collectif. Traduisez votre besoin en argument professionnel. Évitez « j’ai besoin de plus » comme argument principal. Préférez « mon périmètre a augmenté, mes objectifs ont été atteints, et je propose une revalorisation cohérente ».</p>
+        <p>Le troisième biais est le biais de confrontation : se mettre en mode bras de fer trop tôt ferme les portes. Une posture calme et structurée ouvre davantage d’options : hausse immédiate, hausse progressive, revue à date fixe, ajustement de niveau, évolution de rôle, variable mieux aligné.</p>
+
+        <div class="callout"><strong>💡 À retenir :</strong> votre crédibilité vient moins d’un ton ferme que d’une structure claire, de preuves concrètes et d’une capacité à rester constructif.</div>
+
+        <h3>Erreurs mentales classiques à éviter</h3>
+        <p>Erreur 1 : penser qu’il faut « deviner » le chiffre parfait. Il n’existe pas. Il existe une plage crédible. Travaillez une fourchette : cible, plancher, compromis.
+        </p>
+        <p>Erreur 2 : tout miser sur la comparaison avec des collègues. C’est risqué et souvent mal perçu. Les comparaisons internes peuvent exister, mais vos arguments doivent d’abord reposer sur votre valeur propre et des éléments objectivables.</p>
+        <p>Erreur 3 : attendre le dernier moment. Une négociation se prépare en amont : recueil de preuves, cadrage de la demande, compréhension du calendrier décisionnel.</p>
+        <p>Erreur 4 : confondre visibilité et valeur. Être très présent en réunion ne suffit pas. Ce qui compte, c’est l’impact réel sur les résultats, l’autonomie et la fiabilité.</p>
+        <p>Erreur 5 : quitter la discussion après un premier non. Un refus immédiat n’est pas toujours définitif. Vous pouvez obtenir un plan clair vers une revalorisation future.</p>
+
+        <div class="callout error"><strong>🚫 Erreur fréquente :</strong> transformer l’entretien en justification émotionnelle. Une négociation gagne en force quand elle reste factuelle, orientée solution et liée à la valeur créée.</div>
+
+        <h3>Comment structurer son discours : modèle simple en 5 étapes</h3>
+        <p><strong>Étape 1 — Contexte :</strong> rappelez brièvement votre rôle actuel, vos responsabilités et ce qui a évolué récemment.</p>
+        <p><strong>Étape 2 — Résultats :</strong> apportez 3 à 5 faits mesurables. Évitez la liste interminable ; privilégiez des indicateurs lisibles.</p>
+        <p><strong>Étape 3 — Positionnement :</strong> expliquez pourquoi votre niveau de contribution justifie un ajustement de rémunération.</p>
+        <p><strong>Étape 4 — Proposition :</strong> annoncez votre cible en % puis la traduction en brut/mois, en lien avec votre objectif net.</p>
+        <p><strong>Étape 5 — Ouverture :</strong> demandez un échange sur les modalités et proposez des alternatives en cas de contraintes court terme.</p>
+
+        <p>Exemple de formulation complète : « Depuis 12 mois, mon périmètre a progressé sur A, B et C. J’ai livré X et Y avec un impact concret sur Z. Je souhaite donc discuter d’une revalorisation. Mon objectif est d’atteindre environ +150 € net/mois après prélèvement à la source, ce qui correspond à une hausse d’environ +8,9 % dans ma situation actuelle. Je suis ouvert à un échange sur la meilleure modalité de mise en place. »</p>
+
+        <h3>Exemples de phrases exactes à dire</h3>
+        <p>« J’aimerais planifier un point dédié à l’évolution de ma rémunération pour présenter une demande structurée. »</p>
+        <p>« Je souhaite baser cette discussion sur mes résultats, mon périmètre et les objectifs de l’équipe. »</p>
+        <p>« Mon objectif est clair : +X € net/mois. La conversion donne environ +Y % d’augmentation. »</p>
+        <p>« Si un ajustement complet n’est pas possible immédiatement, je suis ouvert à un plan en deux étapes. »</p>
+        <p>« Quels critères précis dois-je valider pour sécuriser la prochaine étape d’évolution ? »</p>
+        <p>« Je préfère une réponse explicite, même progressive, plutôt qu’une zone d’incertitude. »</p>
+
+        <div class="callout warn"><strong>⚠ Attention :</strong> une demande floue oblige votre interlocuteur à deviner votre objectif, ce qui retarde souvent la décision.</div>
+
+        <h3>Mini storytelling : de la confusion à la clarté</h3>
+        <p>Imaginez une salariée qui demande « une petite augmentation » sans chiffrage. Son manager répond qu’il faut voir avec le budget. La discussion se termine sans décision. Un mois plus tard, rien n’a bougé. Elle recommence avec une note d’une page : responsabilités élargies, résultats, proposition chiffrée, alternatives. Le ton est posé, le message net. Cette fois, le manager peut défendre la demande en interne : une partie est accordée immédiatement, l’autre est planifiée à six mois avec conditions explicites. Ce n’est pas magique, c’est structurel.</p>
+        <p>Ce mini scénario reflète une réalité fréquente : la forme fait avancer le fond. Quand vous facilitez le travail d’arbitrage de votre interlocuteur, vous augmentez vos chances de progression.</p>
+
+        <h3>Biais cognitifs à connaître pour mieux négocier</h3>
+        <p><strong>Biais d’ancrage :</strong> le premier chiffre posé influence la discussion. D’où l’importance de proposer un ancrage cohérent, argumenté et soutenable.</p>
+        <p><strong>Biais de statu quo :</strong> par défaut, les organisations évitent le changement. Votre rôle est de montrer pourquoi l’ajustement est justifié aujourd’hui.</p>
+        <p><strong>Biais de disponibilité :</strong> ce qui est visible récemment pèse plus que des résultats anciens. Préparez des exemples récents, précis, et faciles à mémoriser.</p>
+        <p><strong>Biais de confirmation :</strong> chacun interprète les faits selon ses croyances. D’où l’intérêt d’apporter des éléments objectifs et recoupables.</p>
+
+        <h3>Timing idéal : quand ouvrir la discussion</h3>
+        <p>Le meilleur moment est celui où votre contribution est lisible et où une fenêtre de décision existe : revue annuelle, fin de projet, changement de rôle, lancement budgétaire, ou réorganisation d’équipe.</p>
+        <p>Évitez de déclencher la discussion dans un moment de crise opérationnelle immédiate, sauf urgence particulière. Le fond peut être juste, mais l’attention de votre interlocuteur sera captée ailleurs.</p>
+        <p>Si le timing est imparfait, vous pouvez demander un pré-entretien pour préparer le point officiel : « Je souhaite anticiper la revue salariale avec un cadrage clair. »</p>
+
+        <div class="callout tip"><strong>🧠 Astuce négociation :</strong> demandez toujours la prochaine date de revue si la décision est reportée. Une date explicite vaut mieux qu’un “on verra”.</div>
+
+        <h3>Comment gérer un refus sans casser la relation</h3>
+        <p>Un refus n’est pas forcément une fermeture définitive. Votre objectif est de transformer un non en trajectoire. Questions utiles :</p>
+        <ul>
+          <li>« Quelles sont les contraintes exactes aujourd’hui ? »</li>
+          <li>« Quelles conditions mesurables permettraient un accord dans 3 à 6 mois ? »</li>
+          <li>« Pouvons-nous formaliser ces critères pour un suivi clair ? »</li>
+          <li>« Quelle date de revue fixons-nous maintenant ? »</li>
+        </ul>
+        <p>Le piège est de repartir sans plan. Même en cas de refus, cherchez une avancée concrète : critères, calendrier, sponsor interne, étape intermédiaire.</p>
+
+        <h3>Plan B intelligent : négocier autrement que le fixe</h3>
+        <p>Si le fixe bloque temporairement, d’autres leviers peuvent être discutés : variable, prime de mission, prime exceptionnelle, budget formation, jours de télétravail supplémentaires, évolution de titre, élargissement officiel du périmètre, mentorat, participation à des projets stratégiques.</p>
+        <p>L’idée n’est pas de “se contenter de moins”, mais de sécuriser une progression globale : rémunération, employabilité, visibilité interne, trajectoire de carrière.</p>
+        <p>Un plan B bien construit peut même accélérer une hausse du fixe plus tard, car il crée un historique d’évolution documenté.</p>
+
+        <h3>Version détaillée complète : construire un dossier solide</h3>
+        <p>Commencez par une matrice simple en quatre colonnes : « mission », « action », « résultat », « impact ». Cette matrice évite les discours vagues. Elle vous oblige à relier ce que vous faites à ce que cela produit réellement. Ensuite, priorisez les éléments les plus significatifs sur la période récente.</p>
+        <p>Ajoutez une section « évolution de périmètre ». Souvent, les responsabilités augmentent progressivement sans requalification immédiate. Documenter cette évolution est essentiel : nouveaux sujets, niveau de complexité, coordination transverse, gestion de risques, autonomie décisionnelle, expertise mobilisée.</p>
+        <p>Ensuite, préparez votre partie chiffrée avec ce simulateur. Calculez un scénario central, puis deux variantes. Par exemple :</p>
+        <ul>
+          <li>Scénario A : objectif net +120 € / mois</li>
+          <li>Scénario B : objectif net +150 € / mois</li>
+          <li>Scénario C : objectif net +180 € / mois</li>
+        </ul>
+        <p>Vous obtenez trois niveaux de demande potentiels en brut et en pourcentage. Cela évite le blocage sur un seul chiffre et vous donne de la flexibilité en entretien.</p>
+        <p>Pensez aussi à la qualité du support. Une page claire est souvent plus efficace qu’un long document. Titres courts, données lisibles, langage neutre, propositions explicites.</p>
+        <p>Enfin, entraînez-vous à l’oral. Une bonne demande doit être fluide en 60 à 90 secondes. Si vous hésitez trop, simplifiez encore. Votre objectif n’est pas d’impressionner, mais de faciliter la décision.</p>
+
+        <div class="schema-steps">
+          <p>Objectif chiffré</p>
+          <p>↓</p>
+          <p>Argumentaire factuel</p>
+          <p>↓</p>
+          <p>Décision ou plan de suivi</p>
         </div>
 
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="#simulator-form" class="btn" style="display: inline-block; width: auto;">Retourner au simulateur</a>
-        </div>
-    </section>
-</main>
+        <h3>Checklist finale avant l’entretien</h3>
+        <ul>
+          <li>Objectif net clair (mensuel)</li>
+          <li>Conversion en brut et en pourcentage</li>
+          <li>3 preuves majeures de valeur</li>
+          <li>2 alternatives réalistes</li>
+          <li>Date de discussion posée</li>
+          <li>Message d’ouverture prêt</li>
+          <li>Question de clôture prête (“quelle suite concrète ?”)</li>
+        </ul>
 
-<footer>
+        <p>Ce guide ne promet pas un résultat automatique. Il vous donne une méthode robuste pour passer d’une intention personnelle à une demande professionnelle, lisible et négociable. C’est exactement ce qui améliore la qualité des échanges et vos chances d’aboutir à une progression réelle.</p>
+      </section>
+
+      
+        <h3>Version détaillée</h3>
+        <h3>Approche longue : comprendre la dynamique d’une organisation</h3>
+        <p>Dans beaucoup d’entreprises, les décisions salariales se prennent en plusieurs couches : manager direct, RH, validation budgétaire, parfois direction. Cela signifie qu’une bonne demande doit survivre à plusieurs lectures successives. Votre manager peut être convaincu, mais il doit encore défendre le dossier devant d’autres interlocuteurs qui ne vous connaissent pas aussi bien. Votre meilleure stratégie consiste donc à formuler votre demande comme un dossier transmissible : clair, synthétique, factuel, compréhensible sans contexte caché.</p>
+        <p>Un dossier transmissible répond à quatre questions : pourquoi maintenant, pourquoi ce niveau, pourquoi vous, pourquoi c’est cohérent pour l’équipe. Le “pourquoi maintenant” dépend de votre trajectoire récente : responsabilités accrues, résultats solides, enjeux plus complexes, autonomie plus forte. Le “pourquoi ce niveau” repose sur votre conversion net → brut → pourcentage et sur une logique de marché réaliste. Le “pourquoi vous” se base sur vos contributions concrètes. Le “pourquoi l’équipe” permet de montrer que votre demande ne contredit pas l’équité interne mais s’inscrit dans une progression argumentée.</p>
+        <p>Plus votre message est simple, plus il est solide. Trop de détails techniques peuvent brouiller la décision. C’est un paradoxe : vous devez bien préparer en profondeur, mais présenter de façon épurée. En entretien, vous pouvez garder les annexes pour les questions de détail, et concentrer la présentation sur les points décisifs. Cette capacité de synthèse est souvent perçue comme un signe de maturité professionnelle.</p>
+
+        <h3>Préparation mentale : gérer la pression avant le rendez-vous</h3>
+        <p>La négociation salariale touche à l’estime de soi, à la reconnaissance et au futur professionnel. Il est normal de ressentir du stress. Le risque est de laisser ce stress dicter votre posture : parler trop vite, justifier excessivement, ou au contraire minimiser sa demande pour éviter l’inconfort. Une préparation mentale simple peut faire une vraie différence.</p>
+        <p>Premier exercice : reformulez votre demande en une phrase neutre et professionnelle. Deuxième exercice : répétez-la à voix haute jusqu’à obtenir un ton posé. Troisième exercice : préparez deux réponses aux objections probables. Quatrième exercice : définissez votre objectif minimal acceptable. Cinquième exercice : anticipez votre conclusion en cas d’accord partiel. Ces cinq micro-pratiques réduisent la charge émotionnelle et améliorent la qualité de votre communication.</p>
+        <p>Vous pouvez aussi adopter une logique d’observation active pendant l’entretien : écoutez le vocabulaire de votre interlocuteur. S’il parle de budget court terme, répondez en étapes. S’il parle d’équité, répondez en critères. S’il parle de performance, répondez en preuves. En d’autres termes, adaptez votre cadrage aux préoccupations exprimées. Une négociation efficace n’est pas un monologue ; c’est une conversation orientée résolution.</p>
+
+        <h3>Bibliothèque d’arguments : exemples prêts à adapter</h3>
+        <p><strong>Argument impact :</strong> « Sur les six derniers mois, j’ai contribué à stabiliser X et à accélérer Y, ce qui a réduit les retards et amélioré la qualité. »</p>
+        <p><strong>Argument périmètre :</strong> « Mon rôle a évolué avec davantage de coordination transverse et de responsabilités opérationnelles. »</p>
+        <p><strong>Argument fiabilité :</strong> « J’ai maintenu un niveau de livraison constant, y compris sur des périodes de charge élevée. »</p>
+        <p><strong>Argument projection :</strong> « Je souhaite continuer à porter ce niveau d’exigence et à contribuer à la progression de l’équipe dans la durée. »</p>
+        <p><strong>Argument cohérence :</strong> « La demande formulée est alignée avec mes résultats et avec le niveau de contribution attendu. »</p>
+        <p>Ces formulations restent volontairement sobres. Évitez les superlatifs inutiles ; privilégiez des faits vérifiables. Vous pouvez compléter par des chiffres quand ils existent (temps gagné, qualité, conformité, délais, satisfaction). Dans certains métiers, les indicateurs sont moins quantifiables. Ce n’est pas un problème : vous pouvez démontrer la valeur avec des exemples précis de résolution, de coordination, de sécurisation, ou de montée en compétence de l’équipe.</p>
+
+        <h3>Négocier avec élégance : fermeté calme et ouverture intelligente</h3>
+        <p>La fermeté n’est pas l’agressivité. Vous pouvez exprimer une ambition claire sans rigidité ni menace. Une posture élégante consiste à tenir trois axes simultanément : clarté sur l’objectif, écoute des contraintes, proposition de solutions. Cette combinaison est souvent plus performante qu’une posture purement revendicative.</p>
+        <p>Concrètement, vous pouvez dire : « Mon objectif est +X %, je comprends les contraintes de calendrier, pouvons-nous travailler un scénario en deux temps avec un engagement formalisé ? ». Cette phrase protège votre objectif tout en laissant de l’espace à la négociation. Elle évite le blocage “tout ou rien” et augmente la probabilité d’obtenir au moins une progression.</p>
+        <p>L’élégance passe aussi par la manière de conclure : résumez l’accord, confirmez les étapes, notez la prochaine date. Si la réponse est différée, demandez les critères explicites. Un échange cordial mais imprécis vaut moins qu’un échange exigeant mais structuré.</p>
+
+        <div class="schema-steps">
+          <p>Vous annoncez votre objectif</p>
+          <p>↓</p>
+          <p>Votre manager exprime des contraintes</p>
+          <p>↓</p>
+          <p>Vous transformez en plan avec date et critères</p>
+        </div>
+
+        <h3>Questions puissantes à poser en entretien</h3>
+        <ul>
+          <li>« Sur quels critères précis est évaluée une évolution de rémunération à mon niveau ? »</li>
+          <li>« Quel est l’écart principal entre ma situation actuelle et l’attendu pour le niveau supérieur ? »</li>
+          <li>« Quelles preuves supplémentaires renforceraient un arbitrage favorable ? »</li>
+          <li>« Si la décision n’est pas immédiate, quelle date de revue pouvons-nous fixer dès maintenant ? »</li>
+          <li>« Comment formaliser un plan de progression avec jalons concrets ? »</li>
+        </ul>
+        <p>Ces questions déplacent la discussion d’un terrain émotionnel vers un terrain de pilotage. Elles montrent que vous cherchez une progression maîtrisée et mesurable, pas un geste arbitraire.</p>
+
+        <h3>Gérer les signaux faibles après l’entretien</h3>
+        <p>Après la réunion, observez les signaux : délai de réponse, précision des retours, clarté des critères, existence d’un suivi. Un “on verra” sans date ni condition est un signal faible. Un “pas maintenant, mais voici trois critères et une date” est un signal plus robuste. Votre rôle est d’obtenir de la précision sans dramatiser la relation.</p>
+        <p>Envoyez un message de synthèse courtois : rappel de votre demande, points discutés, étapes convenues, date cible. Ce mail est utile pour la mémoire collective et pour éviter les malentendus. Il vous permet aussi d’installer un suivi professionnel.</p>
+
+        <h3>Exemple de mail de suivi (modèle)</h3>
+        <p>« Bonjour [Prénom],
+Merci pour notre échange sur l’évolution de ma rémunération.
+Comme convenu, ma demande cible se situe autour de +X % (soit +Y € brut/mois), en cohérence avec mon objectif de +Z € net/mois après prélèvement à la source.
+Nous avons identifié les éléments suivants : [critère 1], [critère 2], [critère 3].
+Nous nous revoyons le [date] pour une décision.
+Merci encore pour ton retour. »</p>
+        <p>Ce type de message est clair, respectueux et utile. Il renforce votre image de professionnel structuré.</p>
+
+        <h3>Quand envisager une stratégie externe</h3>
+        <p>Parfois, malgré une préparation solide, l’environnement ne permet pas d’évolution rapide : gel salarial durable, absence de perspective, manque de reconnaissance répétée. Dans ce cas, il peut être pertinent d’activer une veille externe. Cette démarche ne doit pas être impulsive ; elle doit être réfléchie. L’objectif n’est pas forcément de partir, mais de retrouver de la marge stratégique.</p>
+        <p>Une veille externe bien menée vous donne des repères de marché et peut clarifier votre valeur perçue. Elle peut aussi vous aider à reformuler votre demande interne avec davantage de précision. Si vous choisissez de rester, vous aurez au moins construit une vision plus nette de votre trajectoire. Si vous choisissez de bouger, vous le ferez avec méthode, pas sous le coup de la frustration.</p>
+
+        <div class="callout"><strong>💡 Astuce :</strong> reformulez les accords en fin d’entretien. Ce simple geste évite 80 % des malentendus de suivi.</div>
+
+        <h3>Négociation et éthique professionnelle</h3>
+        <p>Une bonne négociation ne consiste pas à manipuler, mais à clarifier. Évitez les menaces artificielles, les chiffres inventés, ou les comparaisons injustes. À court terme, ces tactiques peuvent sembler efficaces ; à moyen terme, elles fragilisent la confiance. Or la confiance est un actif essentiel de carrière.</p>
+        <p>L’éthique en négociation signifie : dire vrai, reconnaître les limites, défendre ses intérêts sans dégrader la relation, et respecter les contraintes réelles. Cette posture est compatible avec l’ambition. Vous pouvez viser haut et rester intègre.</p>
+
+        <h3>Conclusion de la section guide</h3>
+        <p>Réussir une augmentation ne dépend pas d’une formule magique. C’est la combinaison d’un calcul clair, d’un argumentaire solide, d’un bon timing et d’une communication maîtrisée. Ce site vous aide sur la partie calcul et structure ; le reste se joue dans votre préparation et votre capacité à dialoguer avec professionnalisme. Si vous transformez votre demande en proposition lisible, vous augmentez fortement vos chances d’obtenir une réponse utile, qu’elle soit immédiate ou progressive.</p>
+
+      
+        <h3>Annexe pratique : micro-plan d’action sur 30 jours</h3>
+        <p>Semaine 1 : collectez vos réalisations clés, vos indicateurs et vos exemples concrets. Semaine 2 : structurez votre demande, faites vos simulations avec plusieurs hypothèses de prélèvement à la source et préparez une fourchette de négociation. Semaine 3 : testez votre discours à l’oral, simplifiez vos formulations et entraînez-vous à répondre aux objections probables. Semaine 4 : tenez l’entretien, formalisez un compte-rendu écrit et planifiez la suite avec une date précise.</p>
+        <p>Ce rythme progressif évite la préparation de dernière minute. Il améliore la qualité de votre message, réduit le stress, et vous aide à garder une posture stable pendant l’échange. Même si le résultat final n’est pas immédiat, cette méthode renforce votre pilotage de carrière et votre crédibilité dans la durée.</p>
+
+      <section id="faq">
+        <h2>FAQ</h2>
+        <div class="faq-item"><h3>Le simulateur remplace-t-il une fiche de paie ?</h3><p>Non, jamais. C’est un outil indicatif.</p></div>
+        <div class="faq-item"><h3>Le prélèvement à la source est-il obligatoire ?</h3><p>Non, il est optionnel et à 0 % par défaut.</p></div>
+        <div class="faq-item"><h3>Puis-je utiliser mon salaire annuel ?</h3><p>Oui, le calcul convertit automatiquement en mensuel.</p></div>
+        <div class="faq-item"><h3>Le site envoie-t-il mes données ?</h3><p>Non, les calculs sont locaux dans le navigateur.</p></div>
+        <div class="faq-item"><h3>Le résultat est-il garanti ?</h3><p>Non, la décision finale dépend de votre employeur et du contexte.</p></div>
+      </section>
+
+      <section id="disclaimer">
+        <h2>Disclaimer final</h2>
+        <p>Ce simulateur est proposé à titre strictement indicatif. Il simplifie des mécanismes de paie et de fiscalité pour offrir un ordre de grandeur utile en entretien. Pour toute validation définitive, référez-vous à votre employeur, votre service paie, et aux organismes officiels compétents.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
     <div class="container">
-        <p>&copy; 2026 SimuAugment. Outil gratuit à but indicatif.</p>
-        <div class="footer-links">
-            <a href="a-propos.html">À propos</a>
-            <a href="mentions-legales.html">Mentions Légales</a>
-            <a href="politique-confidentialite.html">Confidentialité</a>
-        </div>
-        <p style="margin-top: 1rem;">Contact : <span id="contact-email">contact@exemple.fr</span></p>
+      <p>Outil indicatif basé sur les barèmes légaux 2026. Seuls les organismes officiels ou votre employeur peuvent valider définitivement votre salaire net.</p>
+      <p>Mentions légales : Le site <strong data-domain-name></strong> propose un simulateur d’augmentation salariale à titre strictement indicatif. Les résultats fournis n’ont aucune valeur légale.</p>
+      <p>Éditeur : <strong data-domain-name></strong> – Simulateur augmentation salaire.</p>
+      <p>Contact : <a data-contact-email></a></p>
+      <p>Hébergement : OVHcloud SAS – 2 rue Kellermann, 59100 Roubaix – France.</p>
+      <p>Ce site ne collecte ni ne conserve directement de données personnelles. Toutefois, des services tiers tels que Google AdSense peuvent utiliser des cookies ou des identifiants afin de diffuser des annonces personnalisées ou non.</p>
+      <p>En savoir plus : <a href="https://policies.google.com/technologies/ads" rel="noopener noreferrer">https://policies.google.com/technologies/ads</a></p>
+      <p><a href="./a-propos.html">À propos</a> | <a href="./mentions-legales.html">Mentions légales</a> | <a href="./politique-confidentialite.html">Politique de confidentialité</a> | <a href="./contact.html">Contact</a></p>
+      <p>© <span data-site-year></span> <span data-domain-name></span></p>
     </div>
-</footer>
+  </footer>
 
-<div id="cookie-banner" class="hidden">
-    <p>Ce site utilise des cookies pour améliorer votre expérience et diffuser des publicités (AdSense). <a href="politique-confidentialite.html" style="color: white; text-decoration: underline;">En savoir plus</a></p>
-    <button id="accept-cookies">OK</button>
-</div>
+  <a class="back-to-sim" href="#simulateur">↑ Simulateur</a>
 
-<script src="assets/config.js"></script>
-<script src="assets/app.js"></script>
-<script>
-    document.getElementById('contact-email').textContent = config.contactEmail;
-</script>
+  <div class="cookie-banner" id="cookie-banner" hidden>
+    <div class="cookie-wrap">
+      <p>Ce site utilise des cookies techniques minimaux pour mémoriser votre consentement, uniquement à cette fin. <a href="./politique-confidentialite.html">En savoir plus</a>.</p>
+      <button id="accept-cookies" type="button">OK</button>
+    </div>
+  </div>
+
+  <script src="./assets/config.js"></script>
+  <script src="./assets/app.js"></script>
 </body>
 </html>
