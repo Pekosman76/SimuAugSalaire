@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculer l’augmentation à demander pour gagner +X€ net par mois</title>
+    <meta name="description" content="Simulateur gratuit pour convertir un objectif de gain net mensuel en augmentation brute. Calculez le pourcentage, le nouveau brut et le coût employeur.">
+    
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Combien demander d'augmentation pour +X€ net ?">
+    <meta property="og:description" content="Outil de simulation précis pour vos négociations salariales.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.github.io/simulateur-augmentation/">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Simulateur d'Augmentation Salaire">
+    
+    <link rel="canonical" href="https://example.github.io/simulateur-augmentation/">
+    <link rel="stylesheet" href="assets/styles.css">
+    
+    <!-- AdSense: coller ici le script -->
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Pourquoi le net après impôt est-il différent du net à payer ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le net à payer est le montant versé par l'employeur avant impôt sur le revenu. Le net après impôt déduit le prélèvement à la source."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quel est le taux de charges sociales moyen en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour un salarié, les charges sont d'environ 22% à 25% du brut. Pour l'employeur, elles s'élèvent souvent à 42% du brut."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="index.html" class="nav-brand">SimuAugment</a>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <h1>Calculer l’augmentation à demander pour gagner +X€ net par mois</h1>
+        <p>Convertissez un objectif net mensuel en pourcentage d’augmentation brute et estimez le coût pour votre entreprise.</p>
+    </section>
+
+    <div class="warning">
+        <strong>Avertissement :</strong> Cet outil est purement indicatif. Les calculs sont des approximations basées sur des taux moyens et ne remplacent pas une fiche de paie réelle, l'avis d'un expert-comptable ou de l'administration fiscale.
+    </div>
+
+    <div class="grid">
+        <!-- Formulaire -->
+        <section class="card">
+            <form id="simulator-form">
+                <div class="form-group">
+                    <label for="brut-actuel">Salaire brut mensuel actuel (€)</label>
+                    <input type="number" id="brut-actuel" placeholder="Ex: 2500" required step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label for="profil">Votre profil</label>
+                    <select id="profil">
+                        <option value="non-cadre">Non-cadre (net ≈ 78%)</option>
+                        <option value="cadre">Cadre (net ≈ 75%)</option>
+                        <option value="custom">Personnalisé</option>
+                    </select>
+                </div>
+
+                <div id="custom-rate-group" class="form-group hidden">
+                    <label for="custom-net-rate">Taux net estimé (ex: 0.78)</label>
+                    <input type="number" id="custom-net-rate" placeholder="0.78" step="0.01" min="0.6" max="0.9">
+                </div>
+
+                <div class="form-group">
+                    <label for="target-net">Augmentation souhaitée en net mensuel (+€)</label>
+                    <input type="number" id="target-net" placeholder="Ex: 100" required step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label for="tax-rate">Taux d’imposition à la source (%)</label>
+                    <input type="number" id="tax-rate" placeholder="0" step="0.1" min="0" max="50">
+                </div>
+
+                <details class="form-group">
+                    <summary style="cursor: pointer; margin-bottom: 0.5rem; font-weight: 600;">Options avancées (Coût employeur)</summary>
+                    <div style="padding-top: 0.5rem;">
+                        <label for="employer-rate">Taux charges patronales (%)</label>
+                        <input type="number" id="employer-rate" value="42" step="0.1">
+                    </div>
+                </details>
+
+                <button type="submit" class="btn">Calculer l'augmentation</button>
+            </form>
+        </section>
+
+        <!-- Résultats -->
+        <section id="results" class="card results">
+            <h3>Résultats de la simulation</h3>
+            <div class="result-item">
+                <span class="result-label">Augmentation brute à demander :</span>
+                <span id="res-percent" class="result-value">--</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Nouveau brut mensuel :</span>
+                <span id="res-brut-mensuel" class="result-value">--</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Gain net mensuel (après impôt) :</span>
+                <span id="res-net-mensuel" class="result-value">--</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Gain net annuel :</span>
+                <span id="res-net-annuel" class="result-value">--</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Surcoût employeur mensuel :</span>
+                <span id="res-employeur-mensuel" class="result-value">--</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Surcoût employeur annuel :</span>
+                <span id="res-employeur-annuel" class="result-value">--</span>
+            </div>
+
+            <div class="negotiation-box">
+                <h4>Comment négocier ?</h4>
+                <p class="negotiation-text" id="nego-text">Calculez d'abord pour voir le texte...</p>
+                <button class="btn btn-secondary" onclick="copyResult()">Copier le résumé</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contenu SEO -->
+    <section class="content-section">
+        <h2>Pourquoi est-il crucial de bien calculer son augmentation ?</h2>
+        <p>Demander une augmentation est un moment charnière dans une carrière. Cependant, beaucoup de salariés font l'erreur de parler uniquement en "net". Si votre patron accepte de vous donner "100 euros de plus", il parle souvent en brut, ce qui signifie que vous ne verrez peut-être que 75 euros sur votre compte. Pire, avec le prélèvement à la source, ce montant peut encore diminuer.</p>
+        
+        <h3>Parler en % plutôt qu'en euros net</h3>
+        <p>Dans le monde de l'entreprise, les budgets sont gérés en brut annuel. Arriver avec un pourcentage précis (par exemple : "Je souhaite une augmentation de 6,5%") montre que vous comprenez les enjeux financiers de l'entreprise. Cela facilite aussi le travail des ressources humaines qui n'ont pas à faire les conversions eux-mêmes.</p>
+
+        <h2>Comprendre la différence : Brut, Net, Net après impôts</h2>
+        <p>En France, le système de paie est complexe. Voici les trois niveaux à distinguer :</p>
+        <ul>
+            <li><strong>Le Salaire Brut :</strong> C'est le montant avant toute déduction. C'est la base de calcul pour vos cotisations retraite, chômage et santé.</li>
+            <li><strong>Le Salaire Net :</strong> C'est ce qui reste après les cotisations sociales (environ 22% pour un non-cadre, 25% pour un cadre).</li>
+            <li><strong>Le Net après Impôts :</strong> Depuis 2019, l'impôt est prélevé directement sur votre fiche de paie. C'est ce qui arrive réellement sur votre compte bancaire.</li>
+        </ul>
+
+        <h2>Ce que voit votre employeur : Le coût total</h2>
+        <p>Quand vous demandez 100€ de plus, l'employeur ne paie pas seulement ces 100€. Il doit aussi payer des charges patronales (souvent autour de 42%). Ainsi, une augmentation de 100€ brut coûte en réalité environ 142€ à l'entreprise. Notre simulateur intègre cette donnée pour vous aider à préparer vos arguments.</p>
+
+        <h2>Exemples chiffrés d'augmentations</h2>
+        <div class="example-grid">
+            <div class="example-card">
+                <strong>Objectif : +100€ net</strong><br>
+                Salaire actuel : 2000€ brut<br>
+                Profil : Non-cadre<br>
+                Augmentation brute : +128€ (6.4%)
+            </div>
+            <div class="example-card">
+                <strong>Objectif : +200€ net</strong><br>
+                Salaire actuel : 3000€ brut<br>
+                Profil : Cadre<br>
+                Augmentation brute : +266€ (8.9%)
+            </div>
+            <div class="example-card">
+                <strong>Objectif : +50€ net</strong><br>
+                Salaire actuel : 1800€ brut<br>
+                Profil : Non-cadre<br>
+                Augmentation brute : +64€ (3.5%)
+            </div>
+            <div class="example-card">
+                <strong>Objectif : +300€ net</strong><br>
+                Salaire actuel : 4000€ brut<br>
+                Profil : Cadre (Impôt 10%)<br>
+                Augmentation brute : +444€ (11.1%)
+            </div>
+            <div class="example-card">
+                <strong>Objectif : +150€ net</strong><br>
+                Salaire actuel : 2500€ brut<br>
+                Profil : Non-cadre<br>
+                Augmentation brute : +192€ (7.7%)
+            </div>
+            <div class="example-card">
+                <strong>Objectif : +500€ net</strong><br>
+                Salaire actuel : 5000€ brut<br>
+                Profil : Cadre (Impôt 15%)<br>
+                Augmentation brute : +784€ (15.7%)
+            </div>
+        </div>
+
+        <h2>Conseils pour une négociation réussie</h2>
+        <p>1. <strong>Préparez vos preuves :</strong> Listez vos accomplissements de l'année écoulée. Les chiffres parlent plus que les mots.</p>
+        <p>2. <strong>Choisissez le bon moment :</strong> L'entretien annuel est le moment classique, mais une fin de projet réussi est aussi une excellente opportunité.</p>
+        <p>3. <strong>Soyez ferme mais flexible :</strong> Si l'augmentation de salaire pur est bloquée, pensez aux avantages (télétravail, formation, primes, tickets restaurant).</p>
+
+        <h2>FAQ - Questions Fréquentes</h2>
+        <div class="faq-item">
+            <p class="faq-question">Quelle est la différence entre cadre et non-cadre pour le calcul ?</p>
+            <p>Les cadres cotisent davantage pour certains organismes (notamment la prévoyance et la retraite complémentaire), ce qui réduit leur salaire net par rapport au brut (environ 75% contre 78% pour les non-cadres).</p>
+        </div>
+        <div class="faq-item">
+            <p class="faq-question">Comment l'impôt à la source impacte-t-il mon augmentation ?</p>
+            <p>Si vous changez de tranche d'imposition à cause de votre augmentation, votre taux de prélèvement à la source pourrait augmenter, réduisant ainsi le gain "réel" perçu sur votre compte.</p>
+        </div>
+        <div class="faq-item">
+            <p class="faq-question">Le simulateur prend-il en compte les primes ?</p>
+            <p>Non, ce simulateur se concentre sur le salaire fixe mensuel. Les primes ont souvent des régimes de taxation différents.</p>
+        </div>
+        <div class="faq-item">
+            <p class="faq-question">Est-il préférable de demander une prime ou une augmentation ?</p>
+            <p>L'augmentation est pérenne et compte pour votre retraite et vos futures indemnités chômage. La prime est ponctuelle et ne garantit rien pour l'avenir.</p>
+        </div>
+        <div class="faq-item">
+            <p class="faq-question">Que faire si mon employeur refuse ?</p>
+            <p>Demandez quels sont les objectifs à atteindre pour obtenir cette augmentation dans 6 mois. Fixez une date pour un nouveau point.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="#simulator-form" class="btn" style="display: inline-block; width: auto;">Retourner au simulateur</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 SimuAugment. Outil gratuit à but indicatif.</p>
+        <div class="footer-links">
+            <a href="a-propos.html">À propos</a>
+            <a href="mentions-legales.html">Mentions Légales</a>
+            <a href="politique-confidentialite.html">Confidentialité</a>
+        </div>
+        <p style="margin-top: 1rem;">Contact : <span id="contact-email">contact@exemple.fr</span></p>
+    </div>
+</footer>
+
+<div id="cookie-banner" class="hidden">
+    <p>Ce site utilise des cookies pour améliorer votre expérience et diffuser des publicités (AdSense). <a href="politique-confidentialite.html" style="color: white; text-decoration: underline;">En savoir plus</a></p>
+    <button id="accept-cookies">OK</button>
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+    document.getElementById('contact-email').textContent = config.contactEmail;
+</script>
+</body>
+</html>

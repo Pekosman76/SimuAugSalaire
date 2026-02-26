@@ -1,0 +1,5 @@
+{
+  "name": "Simulateur d'Augmentation Salaire",
+  "description": "Calculez précisément l'augmentation brute nécessaire pour atteindre votre objectif de gain net mensuel après impôts.",
+  "requestFramePermissions": []
+}
