@@ -1,8 +1,8 @@
 /* Configuration centrale du site (placeholders à personnaliser avant mise en production). */
 const config = {
-  siteName: '[NOM_DE_DOMAINE] – Simulateur augmentation salaire',
-  domainName: '[NOM_DE_DOMAINE]',
-  baseUrl: 'https://example.github.io/simulateur-augmentation',
+  siteName: 'calcul-augmentation-salaire.fr – Simulateur augmentation salaire',
+  domainName: 'calcul-augmentation-salaire.fr',
+  baseUrl: 'https://calcul-augmentation-salaire.fr',
   contactEmail: 'laloumaxime951@gmail.com',
   defaultNetRateNonCadre: 0.78,
   defaultNetRateCadre: 0.75,
