@@ -82,6 +82,38 @@ body {
 .simulator-card { margin-bottom: 1.4rem; }
 .simulator-card h2 { margin-top: 0; }
 
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.mode-tab {
+  border: 1px solid #cad4ff;
+  background: #f4f6ff;
+  color: #344272;
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-tab[aria-selected="true"] {
+  background: #ffffff;
+  color: #293abc;
+  border-color: #97a8ff;
+  box-shadow: 0 4px 14px rgba(55, 73, 184, 0.16);
+}
+
+.tab-description {
+  margin: 0 0 1rem;
+  color: #43506f;
+}
+
+.tab-panel[hidden] { display: none; }
+
 .fieldset-toggle { border: 0; margin: 0 0 1rem; padding: 0; }
 .fieldset-toggle legend { font-weight: 700; margin-bottom: 0.45rem; }
 .segmented {
@@ -366,6 +398,18 @@ select:focus-visible {
   background: #16223d;
   border-color: #2b3b62;
   color: #e8ecff;
+}
+
+[data-theme="dark"] .mode-tab {
+  background: #1b2947;
+  color: #d8e2ff;
+  border-color: #33466f;
+}
+
+[data-theme="dark"] .mode-tab[aria-selected="true"] {
+  background: #16223d;
+  border-color: #6177c6;
+  color: #eef2ff;
 }
 
 [data-theme="dark"] .theme-toggle,
