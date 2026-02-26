@@ -36,6 +36,7 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="./index.html">Simulateur augmentation salaire</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Basculer entre le mode clair et le mode sombre" aria-pressed="false">🌙 Mode sombre</button>
       <nav class="top-links" aria-label="Navigation principale">
         <a href="./a-propos.html">À propos</a>
         <a href="./mentions-legales.html">Mentions légales</a>
@@ -63,20 +64,20 @@
 
     <section class="card simulator-card" id="simulateur">
       <h2>Simulateur</h2>
-      <form id="simulator-form" novalidate>
+      <form id="simulator-form" novalidate aria-describedby="form-error">
         <fieldset class="fieldset-toggle">
           <legend>Votre salaire brut actuel est exprimé en :</legend>
           <div class="segmented">
-            <label><input type="radio" name="salary-mode" value="monthly" checked><span>Mensuel</span></label>
-            <label><input type="radio" name="salary-mode" value="yearly"><span>Annuel</span></label>
+            <label><input type="radio" name="salary-mode" value="monthly" checked aria-label="Salaire mensuel"><span>Mensuel</span></label>
+            <label><input type="radio" name="salary-mode" value="yearly" aria-label="Salaire annuel"><span>Annuel</span></label>
           </div>
         </fieldset>
 
         <label for="salary-value">Salaire brut actuel (€) <span class="input-hint" id="salary-label-hint">Ex : 2500</span></label>
-        <input id="salary-value" type="number" min="0.01" step="0.01" required placeholder="Ex : 2500">
+        <input id="salary-value" type="number" min="0.01" step="0.01" required placeholder="Ex : 2500" aria-required="true" aria-label="Salaire brut actuel en euros">
 
         <label for="profil">Profil</label>
-        <select id="profil">
+        <select id="profil" aria-label="Choix du profil salarial">
           <option value="non-cadre">Non-cadre (taux net estimé 0,78)</option>
           <option value="cadre">Cadre (taux net estimé 0,75)</option>
           <option value="custom">Personnalisé</option>
@@ -84,14 +85,14 @@
 
         <div id="custom-rate-group" hidden>
           <label for="custom-net-rate">Taux net personnalisé (0,60 à 0,90)</label>
-          <input id="custom-net-rate" type="number" min="0.60" max="0.90" step="0.01" placeholder="Ex : 0.77">
+          <input id="custom-net-rate" type="number" min="0.60" max="0.90" step="0.01" placeholder="Ex : 0.77" aria-label="Taux net personnalisé">
         </div>
 
         <label for="target-net">Objectif : +X € net / mois</label>
-        <input id="target-net" type="number" min="0.01" step="0.01" required placeholder="Ex : 150">
+        <input id="target-net" type="number" min="0.01" step="0.01" required placeholder="Ex : 150" aria-required="true" aria-label="Objectif de gain net mensuel">
 
         <label for="tax-rate">Prélèvement à la source (%) <span class="input-hint">optionnel, 0 par défaut</span></label>
-        <input id="tax-rate" type="number" min="0" max="45" step="0.1" value="0">
+        <input id="tax-rate" type="number" min="0" max="45" step="0.1" value="0" aria-label="Taux de prélèvement à la source en pourcentage">
         <p class="tax-help">Indiqué sur votre fiche de paie ou sur impots.gouv.fr</p>
 
         <div class="tax-chips" role="group" aria-label="Raccourcis prélèvement à la source">
@@ -102,10 +103,10 @@
         </div>
 
         <button type="submit">Calculer</button>
-        <p id="form-error" class="error" hidden></p>
+        <p id="form-error" class="error" hidden role="alert"></p>
       </form>
 
-      <section id="results" class="results card" hidden>
+      <section id="results" class="results card" hidden aria-live="polite">
         <h3 class="results-title">🎯 Pour gagner <span id="res-target-net">—</span> net / mois</h3>
         <p class="result-big">🔥 + <span id="res-percent">—</span> d’augmentation</p>
 
@@ -125,6 +126,24 @@
 
         <p class="ready-text" id="ready-text">Votre résumé sera affiché ici après calcul.</p>
         <button id="copy-result" class="copy-btn" type="button">Copier le résumé</button>
+
+        <section class="viz-grid" aria-label="Visualisations des résultats">
+          <article class="chart-card">
+            <h4 id="bar-chart-title">Comparaison augmentation brut / gain net</h4>
+            <canvas id="salary-chart" role="img" aria-labelledby="bar-chart-title"></canvas>
+          </article>
+          <article class="chart-card">
+            <h4 id="line-chart-title">Projection d’évolution sur 12 mois</h4>
+            <canvas id="evolution-chart" role="img" aria-labelledby="line-chart-title"></canvas>
+          </article>
+        </section>
+
+        <section class="negotiation-block" aria-label="Conseils de négociation personnalisés">
+          <h4>Conseils de négociation personnalisés</h4>
+          <p id="negotiation-advice">Le conseil personnalisé apparaîtra ici après le calcul.</p>
+        </section>
+
+        <button id="export-pdf" class="copy-btn" type="button">Exporter en PDF</button>
       </section>
     </section>
 
@@ -438,6 +457,8 @@ Merci encore pour ton retour. »</p>
   </div>
 
   <script src="./assets/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
   <script src="./assets/app.js"></script>
 </body>
 </html>
