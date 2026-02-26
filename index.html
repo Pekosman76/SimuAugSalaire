@@ -64,86 +64,178 @@
 
     <section class="card simulator-card" id="simulateur">
       <h2>Simulateur</h2>
-      <form id="simulator-form" novalidate aria-describedby="form-error">
-        <fieldset class="fieldset-toggle">
-          <legend>Votre salaire brut actuel est exprimé en :</legend>
-          <div class="segmented">
-            <label><input type="radio" name="salary-mode" value="monthly" checked aria-label="Salaire mensuel"><span>Mensuel</span></label>
-            <label><input type="radio" name="salary-mode" value="yearly" aria-label="Salaire annuel"><span>Annuel</span></label>
+
+      <div class="mode-tabs" role="tablist" aria-label="Modes de calcul">
+        <button type="button" class="mode-tab" role="tab" id="tab-new-salary" aria-selected="false" aria-controls="panel-new-salary" data-tab-target="new-salary" tabindex="-1">Calculer le nouveau salaire</button>
+        <button type="button" class="mode-tab" role="tab" id="tab-percent" aria-selected="true" aria-controls="panel-percent" data-tab-target="percent">Calculer le % d’augmentation</button>
+        <button type="button" class="mode-tab" role="tab" id="tab-percent-net" aria-selected="false" aria-controls="panel-percent-net" data-tab-target="percent-net" tabindex="-1">+X% obtenu : gain net</button>
+      </div>
+
+      <section id="panel-new-salary" class="tab-panel" role="tabpanel" aria-labelledby="tab-new-salary" hidden>
+        <p class="tab-description">Entrez votre salaire brut actuel et un montant d’augmentation brute mensuelle. Estimez votre nouveau brut, le pourcentage et votre gain net après prélèvement à la source.</p>
+        <p class="ready-text">Ce mode reste disponible pour conserver la navigation à 3 onglets. Utilisez surtout les onglets “Calculer le % d’augmentation” et “+X% obtenu : gain net”.</p>
+      </section>
+
+      <section id="panel-percent" class="tab-panel" role="tabpanel" aria-labelledby="tab-percent">
+        <form id="simulator-form" novalidate aria-describedby="form-error">
+          <fieldset class="fieldset-toggle">
+            <legend>Votre salaire brut actuel est exprimé en :</legend>
+            <div class="segmented">
+              <label><input type="radio" name="salary-mode" value="monthly" checked aria-label="Salaire mensuel"><span>Mensuel</span></label>
+              <label><input type="radio" name="salary-mode" value="yearly" aria-label="Salaire annuel"><span>Annuel</span></label>
+            </div>
+          </fieldset>
+
+          <label for="salary-value">Salaire brut actuel (€) <span class="input-hint" id="salary-label-hint">Ex : 2500</span></label>
+          <input id="salary-value" type="number" min="0.01" step="0.01" required placeholder="Ex : 2500" aria-required="true" aria-label="Salaire brut actuel en euros">
+
+          <label for="profil">Profil</label>
+          <select id="profil" aria-label="Choix du profil salarial">
+            <option value="non-cadre">Non-cadre (taux net estimé 0,78)</option>
+            <option value="cadre">Cadre (taux net estimé 0,75)</option>
+            <option value="custom">Personnalisé</option>
+          </select>
+
+          <div id="custom-rate-group" hidden>
+            <label for="custom-net-rate">Taux net personnalisé (0,60 à 0,90)</label>
+            <input id="custom-net-rate" type="number" min="0.60" max="0.90" step="0.01" placeholder="Ex : 0.77" aria-label="Taux net personnalisé">
           </div>
-        </fieldset>
 
-        <label for="salary-value">Salaire brut actuel (€) <span class="input-hint" id="salary-label-hint">Ex : 2500</span></label>
-        <input id="salary-value" type="number" min="0.01" step="0.01" required placeholder="Ex : 2500" aria-required="true" aria-label="Salaire brut actuel en euros">
+          <label for="target-net">Objectif : +X € net / mois</label>
+          <input id="target-net" type="number" min="0.01" step="0.01" required placeholder="Ex : 150" aria-required="true" aria-label="Objectif de gain net mensuel">
 
-        <label for="profil">Profil</label>
-        <select id="profil" aria-label="Choix du profil salarial">
-          <option value="non-cadre">Non-cadre (taux net estimé 0,78)</option>
-          <option value="cadre">Cadre (taux net estimé 0,75)</option>
-          <option value="custom">Personnalisé</option>
-        </select>
+          <label for="tax-rate">Prélèvement à la source (%) <span class="input-hint">optionnel, 0 par défaut</span></label>
+          <input id="tax-rate" type="number" min="0" max="45" step="0.1" value="0" aria-label="Taux de prélèvement à la source en pourcentage">
+          <p class="tax-help">Indiqué sur votre fiche de paie ou sur impots.gouv.fr</p>
 
-        <div id="custom-rate-group" hidden>
-          <label for="custom-net-rate">Taux net personnalisé (0,60 à 0,90)</label>
-          <input id="custom-net-rate" type="number" min="0.60" max="0.90" step="0.01" placeholder="Ex : 0.77" aria-label="Taux net personnalisé">
-        </div>
+          <div class="tax-chips" role="group" aria-label="Raccourcis prélèvement à la source">
+            <button class="tax-chip" type="button" data-tax-chip="0">0%</button>
+            <button class="tax-chip" type="button" data-tax-chip="5">5%</button>
+            <button class="tax-chip" type="button" data-tax-chip="10">10%</button>
+            <button class="tax-chip" type="button" data-tax-chip="15">15%</button>
+          </div>
 
-        <label for="target-net">Objectif : +X € net / mois</label>
-        <input id="target-net" type="number" min="0.01" step="0.01" required placeholder="Ex : 150" aria-required="true" aria-label="Objectif de gain net mensuel">
+          <button type="submit">Calculer</button>
+          <p id="form-error" class="error" hidden role="alert"></p>
+        </form>
 
-        <label for="tax-rate">Prélèvement à la source (%) <span class="input-hint">optionnel, 0 par défaut</span></label>
-        <input id="tax-rate" type="number" min="0" max="45" step="0.1" value="0" aria-label="Taux de prélèvement à la source en pourcentage">
-        <p class="tax-help">Indiqué sur votre fiche de paie ou sur impots.gouv.fr</p>
+        <section id="results" class="results card" hidden aria-live="polite">
+          <h3 class="results-title">🎯 Pour gagner <span id="res-target-net">—</span> net / mois</h3>
+          <p class="result-big">🔥 + <span id="res-percent">—</span> d’augmentation</p>
 
-        <div class="tax-chips" role="group" aria-label="Raccourcis prélèvement à la source">
-          <button class="tax-chip" type="button" data-tax-chip="0">0%</button>
-          <button class="tax-chip" type="button" data-tax-chip="5">5%</button>
-          <button class="tax-chip" type="button" data-tax-chip="10">10%</button>
-          <button class="tax-chip" type="button" data-tax-chip="15">15%</button>
-        </div>
+          <div class="result-panel ask">
+            <h4>👉 Ce que vous devez demander</h4>
+            <p><strong>+ <span id="res-brut-monthly">—</span></strong> brut / mois</p>
+            <p><strong>+ <span id="res-brut-yearly">—</span></strong> brut / an</p>
+          </div>
 
-        <button type="submit">Calculer</button>
-        <p id="form-error" class="error" hidden role="alert"></p>
-      </form>
+          <div class="result-divider" aria-hidden="true"></div>
 
-      <section id="results" class="results card" hidden aria-live="polite">
-        <h3 class="results-title">🎯 Pour gagner <span id="res-target-net">—</span> net / mois</h3>
-        <p class="result-big">🔥 + <span id="res-percent">—</span> d’augmentation</p>
+          <div class="result-panel gain">
+            <h4>💰 Ce que vous gagnez réellement</h4>
+            <p>+ <span id="res-net-monthly">—</span> net / mois</p>
+            <p>+ <span id="res-net-yearly">—</span> net / an</p>
+          </div>
 
-        <div class="result-panel ask">
-          <h4>👉 Ce que vous devez demander</h4>
-          <p><strong>+ <span id="res-brut-monthly">—</span></strong> brut / mois</p>
-          <p><strong>+ <span id="res-brut-yearly">—</span></strong> brut / an</p>
-        </div>
+          <p class="ready-text" id="ready-text">Votre résumé sera affiché ici après calcul.</p>
+          <button id="copy-result" class="copy-btn" type="button">Copier le résumé</button>
 
-        <div class="result-divider" aria-hidden="true"></div>
+          <section class="viz-grid" aria-label="Visualisations des résultats">
+            <article class="chart-card">
+              <h4 id="bar-chart-title">Comparaison augmentation brut / gain net</h4>
+              <canvas id="salary-chart" role="img" aria-labelledby="bar-chart-title"></canvas>
+            </article>
+            <article class="chart-card">
+              <h4 id="line-chart-title">Projection d’évolution sur 12 mois</h4>
+              <canvas id="evolution-chart" role="img" aria-labelledby="line-chart-title"></canvas>
+            </article>
+          </section>
 
-        <div class="result-panel gain">
-          <h4>💰 Ce que vous gagnez réellement</h4>
-          <p>+ <span id="res-net-monthly">—</span> net / mois</p>
-          <p>+ <span id="res-net-yearly">—</span> net / an</p>
-        </div>
+          <section class="negotiation-block" aria-label="Conseils de négociation personnalisés">
+            <h4>Conseils de négociation personnalisés</h4>
+            <p id="negotiation-advice">Le conseil personnalisé apparaîtra ici après le calcul.</p>
+          </section>
 
-        <p class="ready-text" id="ready-text">Votre résumé sera affiché ici après calcul.</p>
-        <button id="copy-result" class="copy-btn" type="button">Copier le résumé</button>
-
-        <section class="viz-grid" aria-label="Visualisations des résultats">
-          <article class="chart-card">
-            <h4 id="bar-chart-title">Comparaison augmentation brut / gain net</h4>
-            <canvas id="salary-chart" role="img" aria-labelledby="bar-chart-title"></canvas>
-          </article>
-          <article class="chart-card">
-            <h4 id="line-chart-title">Projection d’évolution sur 12 mois</h4>
-            <canvas id="evolution-chart" role="img" aria-labelledby="line-chart-title"></canvas>
-          </article>
+          <button id="export-pdf" class="copy-btn" type="button">Exporter en PDF</button>
         </section>
+      </section>
 
-        <section class="negotiation-block" aria-label="Conseils de négociation personnalisés">
-          <h4>Conseils de négociation personnalisés</h4>
-          <p id="negotiation-advice">Le conseil personnalisé apparaîtra ici après le calcul.</p>
+      <section id="panel-percent-net" class="tab-panel" role="tabpanel" aria-labelledby="tab-percent-net" hidden>
+        <p class="tab-description">Entrez votre salaire brut actuel et le % obtenu. Estimez le gain net mensuel après prélèvement à la source.</p>
+
+        <form id="percent-net-form" novalidate aria-describedby="percent-net-error">
+          <label for="percent-net-salary">Salaire brut actuel (€)</label>
+          <input id="percent-net-salary" type="number" min="0.01" step="0.01" placeholder="Ex : 2500" required>
+
+          <fieldset class="fieldset-toggle">
+            <legend>Période</legend>
+            <div class="segmented">
+              <label><input type="radio" name="percent-net-mode" value="monthly" checked><span>Par mois</span></label>
+              <label><input type="radio" name="percent-net-mode" value="yearly"><span>Par an</span></label>
+            </div>
+          </fieldset>
+
+          <label for="percent-net-pct">Pourcentage d’augmentation obtenu (%)</label>
+          <input id="percent-net-pct" type="number" min="0.01" step="0.01" placeholder="Ex : 5" required>
+
+          <label for="percent-net-profile">Profil salarié</label>
+          <select id="percent-net-profile">
+            <option value="non-cadre">Non-cadre (taux net estimé 0,78)</option>
+            <option value="cadre">Cadre (taux net estimé 0,75)</option>
+            <option value="custom">Personnalisé</option>
+          </select>
+
+          <div id="percent-net-custom-group" hidden>
+            <label for="percent-net-custom-rate">Taux net sur brut (%)</label>
+            <input id="percent-net-custom-rate" type="number" min="60" max="90" step="0.01" placeholder="Ex : 77">
+          </div>
+
+          <label for="percent-net-tax">Taux de prélèvement à la source (%)</label>
+          <input id="percent-net-tax" type="number" min="0" max="45" step="0.1" value="0" required>
+
+          <button type="submit">Calculer</button>
+          <p id="percent-net-error" class="error" hidden role="alert"></p>
+        </form>
+
+        <section id="percent-net-results" class="results card" hidden aria-live="polite">
+          <h3 class="results-title">📈 Conversion de +<span id="percent-net-applied">—</span> en gain net</h3>
+          <p class="result-big">💶 Gain net mensuel réel : +<span id="percent-net-gain-real">—</span></p>
+
+          <div class="result-panel gain">
+            <h4>Brut mensuel (équivalent)</h4>
+            <p>Ancien : <span id="percent-net-old-gross">—</span></p>
+            <p>Nouveau : <span id="percent-net-new-gross">—</span></p>
+            <p>Gain brut mensuel : +<span id="percent-net-gross-gain">—</span></p>
+          </div>
+
+          <div class="result-divider" aria-hidden="true"></div>
+
+          <div class="result-panel gain">
+            <h4>Net avant impôt (mensuel)</h4>
+            <p>Ancien : <span id="percent-net-old-net-before">—</span></p>
+            <p>Nouveau : <span id="percent-net-new-net-before">—</span></p>
+            <p>Gain : +<span id="percent-net-gain-before">—</span></p>
+          </div>
+
+          <div class="result-divider" aria-hidden="true"></div>
+
+          <div class="result-panel gain">
+            <h4>Net après prélèvement à la source (mensuel)</h4>
+            <p>Ancien : <span id="percent-net-old-net-after">—</span></p>
+            <p>Nouveau : <span id="percent-net-new-net-after">—</span></p>
+            <p>Gain : +<span id="percent-net-gain-after">—</span></p>
+            <p>Gain net annuel (12 mois) : +<span id="percent-net-gain-after-yearly">—</span></p>
+          </div>
+
+          <p class="ready-text" id="percent-net-explanation">Le pourcentage d’augmentation est le même en mensuel et en annuel : il s’applique au salaire de base.</p>
+          <div id="percent-net-annual-block" class="result-panel gain" hidden>
+            <h4>Montants annuels (équivalent)</h4>
+            <p>Ancien brut annuel : <span id="percent-net-old-gross-yearly">—</span></p>
+            <p>Nouveau brut annuel : <span id="percent-net-new-gross-yearly">—</span></p>
+            <p>Ancien net après impôt annuel : <span id="percent-net-old-net-after-yearly">—</span></p>
+            <p>Nouveau net après impôt annuel : <span id="percent-net-new-net-after-yearly">—</span></p>
+          </div>
         </section>
-
-        <button id="export-pdf" class="copy-btn" type="button">Exporter en PDF</button>
       </section>
     </section>
 

@@ -219,7 +219,11 @@
 
   function setupSimulator() {
     const form = document.getElementById('simulator-form');
-    if (!form) return;
+    const percentNetForm = document.getElementById('percent-net-form');
+    const tabButtons = Array.from(document.querySelectorAll('.mode-tab'));
+    const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+
+    if (!form || !percentNetForm || tabButtons.length === 0 || tabPanels.length === 0) return;
 
     const salaryModeInputs = document.querySelectorAll('input[name="salary-mode"]');
     const salaryValueInput = document.getElementById('salary-value');
@@ -235,9 +239,51 @@
     const adviceNode = document.getElementById('negotiation-advice');
     const exportButton = document.getElementById('export-pdf');
 
+    const percentNetSalaryInput = document.getElementById('percent-net-salary');
+    const percentNetModeInputs = document.querySelectorAll('input[name="percent-net-mode"]');
+    const percentNetPctInput = document.getElementById('percent-net-pct');
+    const percentNetProfileField = document.getElementById('percent-net-profile');
+    const percentNetCustomGroup = document.getElementById('percent-net-custom-group');
+    const percentNetCustomRate = document.getElementById('percent-net-custom-rate');
+    const percentNetTax = document.getElementById('percent-net-tax');
+    const percentNetError = document.getElementById('percent-net-error');
+    const percentNetResults = document.getElementById('percent-net-results');
+    const percentNetAnnualBlock = document.getElementById('percent-net-annual-block');
+
     function selectedMode() {
       const selected = Array.from(salaryModeInputs).find((input) => input.checked);
       return selected ? selected.value : 'monthly';
+    }
+
+    function selectedPercentNetMode() {
+      const selected = Array.from(percentNetModeInputs).find((input) => input.checked);
+      return selected ? selected.value : 'monthly';
+    }
+
+    function activateTab(tabName) {
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.tabTarget === tabName;
+        button.setAttribute('aria-selected', String(isActive));
+        button.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+
+      tabPanels.forEach((panel) => {
+        panel.hidden = panel.id !== `panel-${tabName}`;
+      });
+    }
+
+    function handleTabKeyboard(event) {
+      const currentIndex = tabButtons.findIndex((button) => button === document.activeElement);
+      if (currentIndex === -1) return;
+
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+
+      const delta = event.key === 'ArrowRight' ? 1 : -1;
+      const nextIndex = (currentIndex + delta + tabButtons.length) % tabButtons.length;
+      const nextTab = tabButtons[nextIndex];
+      activateTab(nextTab.dataset.tabTarget);
+      nextTab.focus();
     }
 
     function updateSalaryHint() {
@@ -251,6 +297,12 @@
       customRateInput.required = isCustom;
     }
 
+    function togglePercentNetCustomRate() {
+      const isCustom = percentNetProfileField.value === 'custom';
+      percentNetCustomGroup.hidden = !isCustom;
+      percentNetCustomRate.required = isCustom;
+    }
+
     function showError(message) {
       errorNode.textContent = message;
       errorNode.hidden = false;
@@ -261,14 +313,30 @@
       errorNode.hidden = true;
     }
 
+    function showPercentNetError(message) {
+      percentNetError.textContent = message;
+      percentNetError.hidden = false;
+    }
+
+    function clearPercentNetError() {
+      percentNetError.textContent = '';
+      percentNetError.hidden = true;
+    }
+
     function resolveNetRate(profile, customRate) {
       if (profile === 'non-cadre') return config.defaultNetRateNonCadre;
       if (profile === 'cadre') return config.defaultNetRateCadre;
       return customRate;
     }
 
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => activateTab(button.dataset.tabTarget));
+      button.addEventListener('keydown', handleTabKeyboard);
+    });
+
     salaryModeInputs.forEach((input) => input.addEventListener('change', updateSalaryHint));
     profileField.addEventListener('change', toggleCustomRate);
+    percentNetProfileField.addEventListener('change', togglePercentNetCustomRate);
 
     taxChips.forEach((chip) => {
       chip.addEventListener('click', () => {
@@ -278,6 +346,8 @@
 
     updateSalaryHint();
     toggleCustomRate();
+    togglePercentNetCustomRate();
+    activateTab('percent');
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -342,12 +412,87 @@
 
       document.getElementById('ready-text').textContent = summary;
       adviceNode.textContent = negotiationAdvice;
-      copyButton.dataset.copyText = `${summary}\n\n${negotiationAdvice}`;
+      copyButton.dataset.copyText = `${summary}
+
+${negotiationAdvice}`;
 
       renderCharts({ brutIncreaseMonthly, gainNetMonthly, taxRatePct });
 
       results.hidden = false;
       results.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    percentNetForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      clearPercentNetError();
+
+      const mode = selectedPercentNetMode();
+      const grossInput = Number.parseFloat(percentNetSalaryInput.value);
+      const pct = Number.parseFloat(percentNetPctInput.value);
+      const taxRatePct = Number.parseFloat(percentNetTax.value);
+      const customRatePercent = Number.parseFloat(percentNetCustomRate.value);
+      const netRate = resolveNetRate(percentNetProfileField.value, customRatePercent / 100);
+
+      if (!Number.isFinite(grossInput) || grossInput <= 0) {
+        showPercentNetError('Le salaire brut actuel doit être supérieur à 0.');
+        return;
+      }
+
+      if (!Number.isFinite(pct) || pct <= 0) {
+        showPercentNetError('Le pourcentage d’augmentation doit être supérieur à 0.');
+        return;
+      }
+
+      if (!Number.isFinite(taxRatePct) || taxRatePct < 0 || taxRatePct > 45) {
+        showPercentNetError('Le prélèvement à la source doit être entre 0 et 45 %.');
+        return;
+      }
+
+      if (!Number.isFinite(netRate) || netRate < 0.6 || netRate > 0.9) {
+        showPercentNetError('Le taux net personnalisé doit être compris entre 60 % et 90 %.');
+        return;
+      }
+
+      const grossMonthly = mode === 'yearly' ? grossInput / 12 : grossInput;
+      const newGrossMonthly = grossMonthly * (1 + (pct / 100));
+      const gainGrossMonthly = newGrossMonthly - grossMonthly;
+
+      const netBeforeOld = grossMonthly * netRate;
+      const netBeforeNew = newGrossMonthly * netRate;
+      const gainNetBefore = netBeforeNew - netBeforeOld;
+
+      const pasFactor = 1 - (taxRatePct / 100);
+      const netAfterOld = netBeforeOld * pasFactor;
+      const netAfterNew = netBeforeNew * pasFactor;
+      const gainNetAfter = netAfterNew - netAfterOld;
+
+      document.getElementById('percent-net-applied').textContent = `${pct.toFixed(2)} %`;
+      document.getElementById('percent-net-gain-real').textContent = formatEuro(gainNetAfter);
+      document.getElementById('percent-net-old-gross').textContent = formatEuro(grossMonthly);
+      document.getElementById('percent-net-new-gross').textContent = formatEuro(newGrossMonthly);
+      document.getElementById('percent-net-gross-gain').textContent = formatEuro(gainGrossMonthly);
+
+      document.getElementById('percent-net-old-net-before').textContent = formatEuro(netBeforeOld);
+      document.getElementById('percent-net-new-net-before').textContent = formatEuro(netBeforeNew);
+      document.getElementById('percent-net-gain-before').textContent = formatEuro(gainNetBefore);
+
+      document.getElementById('percent-net-old-net-after').textContent = formatEuro(netAfterOld);
+      document.getElementById('percent-net-new-net-after').textContent = formatEuro(netAfterNew);
+      document.getElementById('percent-net-gain-after').textContent = formatEuro(gainNetAfter);
+      document.getElementById('percent-net-gain-after-yearly').textContent = formatEuro(gainNetAfter * 12);
+
+      if (mode === 'yearly') {
+        percentNetAnnualBlock.hidden = false;
+        document.getElementById('percent-net-old-gross-yearly').textContent = formatEuro(grossMonthly * 12);
+        document.getElementById('percent-net-new-gross-yearly').textContent = formatEuro(newGrossMonthly * 12);
+        document.getElementById('percent-net-old-net-after-yearly').textContent = formatEuro(netAfterOld * 12);
+        document.getElementById('percent-net-new-net-after-yearly').textContent = formatEuro(netAfterNew * 12);
+      } else {
+        percentNetAnnualBlock.hidden = true;
+      }
+
+      percentNetResults.hidden = false;
+      percentNetResults.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     copyButton.addEventListener('click', async () => {
@@ -376,6 +521,7 @@
       });
     }
   }
+
 
   document.addEventListener('DOMContentLoaded', () => {
     injectSharedContent();
