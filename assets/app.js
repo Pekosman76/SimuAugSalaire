@@ -21,6 +21,12 @@
     document.querySelectorAll('[data-domain-name]').forEach((node) => {
       node.textContent = config.domainName;
     });
+  }
+
+  function setupCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    const button = document.getElementById('accept-cookies');
+    if (!banner || !button) return;
 
     document.querySelectorAll('[data-contact-email]').forEach((node) => {
       node.textContent = config.contactEmail;
